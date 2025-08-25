@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+
+  --color-primary_color: #3B100C;
+  --color-gray_text2: #6E6D6D;
+  --color-gray_text3: #3E4449;
+  --color-gray_text1: #EAEAEA;
+  --color-accent: #A60F01;
+  --color-primary_darkblue: #114466;
+  --color-primary_gray: #d0c6bc;
+  --color-text_gray: #A5A1A1;
+  --color-hover_gray: #F7F4FF;
+
+}
+
+.sansation {
+  font-family: "Sansation", sans-serif;
+}
+
+button{
+  @apply cursor-pointer;
+}
