@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion,type Variants, AnimatePresence } from 'framer-motion';
-import { Heart, Bed, Bath, Square, MapPin, ArrowRight } from 'lucide-react';
+import { Heart, MapPin, ArrowRight } from 'lucide-react';
 import SqrMtr from '../../components/iconComponent/SqrMtr';
 import BathIcon from '../../components/iconComponent/BathIcon';
 import BedIcon from '../../components/iconComponent/BedIcon';
