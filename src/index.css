@@ -21,3 +21,6 @@
 button{
   @apply cursor-pointer;
 }
+.max-w-7xl{
+  max-width:1317px
+}

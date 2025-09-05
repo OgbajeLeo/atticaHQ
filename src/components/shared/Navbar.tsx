@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {  X, MessageCircle, User } from "lucide-react";
+import { X, User, ChevronRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import ProfileIcon from "../iconComponent/ProfileIcon";
 import WhatsapIcon from "../iconComponent/WhatsapIcon";
@@ -13,6 +14,7 @@ interface NavItem {
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const navItems: NavItem[] = [
     { label: "Home", href: "/" },
@@ -53,7 +55,7 @@ const Navbar: React.FC = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -2 }}
                   className={`px-3 py-2 text-lg font-medium transition-colors duration-200 relative group ${
-                    item.label === "Home"
+                    location.pathname === item.href
                       ? "text-primary_color font-semibold"
                       : "text-[#6E6D6D] hover:text-primary_color"
                   }`}
@@ -121,13 +123,48 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden top-12 z-50 h-screen bg-white border-t border-gray-100 overflow-hidden"
+            initial={{ opacity: 0, x: "-100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "-100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden fixed inset-0 z-50 bg-white overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-3 space-y-1">
+            {/* Header with Logo and Close Button */}
+            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+              <div className="flex items-center space-x-3">
+                <div className=" flex items-center justify-center">
+                  <img src={logo} alt="logo" className="w-full" />
+                </div>
+              </div>
+              <motion.button
+                onClick={toggleMobileMenu}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-600 hover:text-gray-900 focus:outline-none p-2"
+              >
+                <X size={24} />
+              </motion.button>
+            </div>
+
+            {/* User Profile Section */}
+            <div className="px-6 py-6 border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-[#FFF4F4] rounded-full flex items-center justify-center">
+                    <span className="text-gray_text3 font-bold text-xl">C</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Chizoba Odita
+                    </h3>
+                    <p className="text-sm text-gray-600">View your Account</p>
+                  </div>
+                </div>
+                <ChevronRight size={20} className="text-gray-400" />
+              </div>
+            </div>
+
+            {/* Navigation Items */}
+            <div className="px-6 py-6 space-y-2">
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.label}
@@ -135,39 +172,16 @@ const Navbar: React.FC = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className={`block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200 ${
-                    item.label === "Home"
-                      ? "text-primary_color bg-amber-50"
-                      : "text-gray-600  hover:bg-gray-50"
+                  className={`block px-4 py-3 text-base font-medium rounded-lg transition-colors duration-200 ${
+                    location.pathname === item.href
+                      ? "text-primary_color bg-[#F5F5DC]"
+                      : "text-gray-700 hover:bg-gray-50"
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
                 </motion.a>
               ))}
-
-              {/* Mobile Action Buttons */}
-              <div className="pt-4 space-y-2">
-                <motion.button
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                  className="w-full bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center justify-center space-x-2 hover:bg-green-600 transition-colors duration-200"
-                >
-                  <MessageCircle size={16} />
-                  <span>Chat With Us</span>
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                  className="w-full bg-primary_color text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center space-x-2 transition-colors duration-200"
-                >
-                  <User size={16} />
-                  <span>Log In</span>
-                </motion.button>
-              </div>
             </div>
           </motion.div>
         )}

@@ -4,14 +4,14 @@ import bg from "../../assets/heroBG.jpg";
 import OpenClose from "../../components/iconComponent/OpenClose";
 
 interface SearchFilters {
-  type: "Buy" | "Rent" | "Sell";
+  type: "Buy" | "Rent";
   lookingFor: string;
   location: string;
   price: string;
 }
 
 const Hero: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"Buy" | "Rent" | "Sell">("Buy");
+  const [activeTab, setActiveTab] = useState<"Buy" | "Rent" >("Buy");
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     type: "Buy",
     lookingFor: "",
@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
     price: "₦25,500,000",
   });
 
-  const tabs = ["Buy", "Rent", "Sell"] as const;
+  const tabs = ["Buy", "Rent"] as const;
   const locations = ["Abuja", "Lagos", "Kano", "Port Harcourt", "Ibadan"];
   const priceRanges = [
     "₦5,000,000",
@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
     "₦100,000,000+",
   ];
 
-  const handleTabChange = (tab: "Buy" | "Rent" | "Sell") => {
+  const handleTabChange = (tab: "Buy" | "Rent" ) => {
     setActiveTab(tab);
     setSearchFilters((prev) => ({ ...prev, type: tab }));
   };
@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden mt-11 lg:block min-h-[700px] hidden">
+    <div className="relative overflow-hidden mt-11 min-h-[700px] ">
       <div className="absolute rounded-[20px] max-w-7xl h-[700px] mx-auto" />
       <div
         className="absolute rounded-[20px] max-w-7xl h-[700px] mx-auto inset-0 bg-black bg-cover bg-center opacity-80 bg-no-repeat"
@@ -89,15 +89,15 @@ const Hero: React.FC = () => {
           className="w-full max-w-5xl mt-[100px]"
         >
           {/* Tabs */}
-          <div className="flex bg-white rounded-t-lg max-w-[373px]">
+          <div className="flex bg-white rounded-t-lg max-w-[251px]">
             {tabs.map((tab, index) => (
               <motion.button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
-                className={`flex-1 py-3 px-12 ${
+                className={`flex-1 py-6 px-12 ${
                   index == 0
                     ? "rounded-tl-lg"
-                    : index == 2
+                    : index == 1
                     ? "rounded-tr-lg"
                     : ""
                 } text-[15px] font-semibold transition-all duration-300 ${
@@ -117,7 +117,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Search Form */}
-          <div className="flex items-end gap-6 bg-white rounded-b-2xl shadow-xl p-6 w-full">
+          <div className="flex items-end gap-6 bg-white rounded-b-2xl shadow-xl p-6 py-10 w-full">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
               {/* Looking For */}
               <motion.div
