@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
-  Bed,
-  Bath,
-  Square,
   MapPin,
   Search,
   ChevronDown,
   SlidersHorizontal,
-  Grid3X3,
-  List,
   Mail,
-  MessageCircle,
   Building,
 } from "lucide-react";
+import WhatsapIcon from "../../components/iconComponent/WhatsapIcon";
+import GridIcon from "../../components/iconComponent/GridIcon";
+import ListIcon from "../../components/iconComponent/ListIcon";
+import BedIcon from "../../components/iconComponent/BedIcon";
+import SqrMtr from "../../components/iconComponent/SqrMtr";
+import BathIcon from "../../components/iconComponent/BathIcon";
+import { useNavigate } from "react-router-dom";
 
 interface Property {
   id: number;
@@ -33,7 +34,7 @@ type ViewType = "grid" | "list";
 
 const PropertyListingPage: React.FC = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
-  const [searchLocation, setSearchLocation] = useState("Abuja, Nigeria");
+  const [searchLocation, setSearchLocation] = useState("Abuja");
   const [propertyType, setPropertyType] = useState("Property Type");
   const [rooms, setRooms] = useState("Rooms");
   const [priceRange, setPriceRange] = useState("Price");
@@ -44,7 +45,7 @@ const PropertyListingPage: React.FC = () => {
   const [propertiesPerPage] = useState(8);
   const [minBathrooms, setMinBathrooms] = useState("Any");
   const [minSqft, setMinSqft] = useState("Any");
-
+  const navigate = useNavigate();
   const properties: Property[] = [
     {
       id: 1,
@@ -281,7 +282,7 @@ const PropertyListingPage: React.FC = () => {
         >
           <span
             className={
-              value === placeholder ? "text-gray-500" : "text-gray-900"
+              value === placeholder ? "text-gray-500" : "text-gray_text2"
             }
           >
             {value}
@@ -322,11 +323,7 @@ const PropertyListingPage: React.FC = () => {
 
   const PropertyCard: React.FC<{ property: Property }> = ({ property }) => (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ y: -4 }}
+      onClick={() => navigate(`/property/${property.id}`)}
       className={`bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group ${
         viewType === "list" ? "flex h-64" : ""
       }`}
@@ -340,75 +337,80 @@ const PropertyListingPage: React.FC = () => {
         <img
           src={property.image}
           alt={property.title}
-          className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+          className={`object-cover transition-transform duration-500 group-hover:scale-105 ${
             viewType === "list" ? "w-full h-full" : "w-full h-48"
           }`}
         />
 
         {/* Heart Button */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleFavorite(property.id);
-          }}
-          className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all duration-200"
-        >
-          <Heart
-            className={`w-4 h-4 transition-colors duration-200 ${
-              favorites.has(property.id)
-                ? "fill-red-500 text-red-500"
-                : "text-gray-400 hover:text-red-500"
-            }`}
-          />
-        </motion.button>
+        {viewType === "grid" && (
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(property.id);
+            }}
+            className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all duration-200"
+          >
+            <Heart
+              className={`w-4 h-4 transition-colors duration-200 ${
+                favorites.has(property.id)
+                  ? "fill-primary_color text-primary_color"
+                  : "text-gray-400 hover:text-primary_color"
+              }`}
+            />
+          </motion.button>
+        )}
       </div>
 
       {/* Content */}
       <div
-        className={`p-6 ${
-          viewType === "list" ? "w-1/2 flex flex-col justify-between" : ""
+        className={`p-3 ${
+          viewType === "list" ? "w-1/2 flex flex-col justify-between px-6" : ""
         }`}
       >
         {viewType === "list" ? (
           <>
             {/* List View Layout */}
-            <div>
-              {/* Price */}
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                {property.price}
-              </h3>
+            <div className="w-full">
+              <div className="flex items-center justify-between mb-3.5">
+                {/* Price */}
+                <h3 className="text-2xl font-bold text-black">
+                  {property.price}
+                </h3>
 
-              {/* Location */}
-              <div className="flex items-center text-gray-600 mb-3">
-                <MapPin className="w-4 h-4 mr-1" />
-                <span className="text-sm">{property.location}</span>
+                {/* Location */}
+                <div className="flex items-center text-gray_text2">
+                  <span className="text-sm">{property.location}</span>
+                  <MapPin className="w-4 h-4 mr-1" />
+                </div>
               </div>
 
               {/* Description */}
-              <p className="text-gray-700 mb-4 text-sm line-clamp-2">
+              <p className="text-gray_text2 mb-4 text-sm line-clamp-2">
                 {property.title}
               </p>
 
               {/* Property Attributes */}
-              <div className="space-y-2 flex text-sm text-gray-600">
-                <div className="flex items-center">
-                  <Bed className="w-4 h-4 mr-2" />
+              <div className="space-y-2 justify-between flex text-xs w-full text-gray_text2 mb-6">
+                <div className="flex gap-2 items-center w-full">
+                  <BedIcon />
                   <span>Bedrooms : {property.beds}</span>
                 </div>
 
-                <div className="flex items-center">
-                  <Bath className="w-4 h-4 mr-2" />
+                <div className="flex gap-2 justify-start items-center w-full">
+                  <BathIcon />
                   <span>Bathrooms : {property.baths}</span>
                 </div>
-
-                <div className="flex items-center">
-                  <Square className="w-4 h-4 mr-2" />
+              </div>
+              <div className="space-y-2 justify-between flex text-xs w-full text-gray_text2">
+                <div className="flex gap-2 items-center w-full">
+                  <SqrMtr />
                   <span>Property Size : {property.sqft} Sq. mtr</span>
                 </div>
 
-                <div className="flex items-center">
+                <div className="flex items-center w-full">
                   <Building className="w-4 h-4 mr-2" />
                   <span>Property Type: Apartment</span>
                 </div>
@@ -417,13 +419,13 @@ const PropertyListingPage: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-2 mt-4">
-              <button className="flex-1 bg-amber-800 text-white px-3 py-2 rounded-lg hover:bg-amber-900 transition-colors flex items-center justify-center text-sm">
-                <Mail className="w-4 h-4 mr-1" />
+              <button className="flex-1 bg-primary_color text-white px-3 py-2.5 rounded-xl  transition-colors flex items-center justify-center text-sm">
+                <Mail className="w-4 h-4 mr-3" />
                 Request a Tour
               </button>
-              <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center text-sm">
-                <MessageCircle className="w-4 h-4 mr-1 text-green-600" />
-                Chat With Us
+              <button className="flex-1 space-x-3 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center text-sm">
+                <WhatsapIcon />
+                <span>Chat With Us</span>
               </button>
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -437,8 +439,8 @@ const PropertyListingPage: React.FC = () => {
                 <Heart
                   className={`w-4 h-4 transition-colors duration-200 ${
                     favorites.has(property.id)
-                      ? "fill-red-500 text-red-500"
-                      : "text-gray-400 hover:text-red-500"
+                      ? "fill-primary_color text-primary_color"
+                      : "text-gray-400 hover:text-primary_color"
                   }`}
                 />
               </motion.button>
@@ -447,34 +449,36 @@ const PropertyListingPage: React.FC = () => {
         ) : (
           <>
             {/* Grid View Layout */}
-            <div className="flex items-start justify-between mb-2">
-              <h3 className="text-xl font-bold text-gray-900">
-                {property.price}
-              </h3>
+            <div className="flex items-center justify-between mb-3.5">
+              <div className="flex items-start justify-between ">
+                <h3 className="text-lg font-bold text-black">
+                  {property.price}
+                </h3>
+              </div>
+
+              <div className="flex items-center text-gray_text2 ">
+                <span className="text-xs">{property.location}</span>
+                <MapPin className="w-3 h-3 mr-1" />
+              </div>
             </div>
 
-            <div className="flex items-center text-gray-600 mb-3">
-              <MapPin className="w-4 h-4 mr-1" />
-              <span className="text-sm">{property.location}</span>
-            </div>
-
-            <p className="text-gray-700 mb-4 text-sm line-clamp-2">
+            <p className="text-gray_text2 font-normal mb-4 text-xs line-clamp-2">
               {property.title}
             </p>
 
-            <div className="flex items-center space-x-4 text-sm text-gray-600">
-              <div className="flex items-center">
-                <Bed className="w-4 h-4 mr-1" />
+            <div className="flex items-center justify-between space-x-4 text-xs w-full text-gray_text2">
+              <div className="flex gap-2 items-center">
+                <BedIcon  />
                 <span>{property.beds} Beds</span>
               </div>
 
-              <div className="flex items-center">
-                <Bath className="w-4 h-4 mr-1" />
+              <div className="flex gap-2 items-center">
+                <BathIcon />
                 <span>{property.baths} baths</span>
               </div>
 
-              <div className="flex items-center">
-                <Square className="w-4 h-4 mr-1" />
+              <div className="flex gap-2 items-center">
+                <SqrMtr />
                 <span>{property.sqft} Sq. mtr</span>
               </div>
             </div>
@@ -487,11 +491,11 @@ const PropertyListingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header/Filter Section */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white border-b border-gray-200 sticky top-[92px] z-40 ">
+        <div className="max-w-7xl mx-auto px-2 lg:px-2">
           {/* Main Filter Bar */}
           <div className="py-4">
-            <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
+            <div className="flex flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
               {/* Buy Button */}
               <div className="flex-shrink-0">
                 <DropdownSelect
@@ -503,22 +507,22 @@ const PropertyListingPage: React.FC = () => {
               </div>
 
               {/* Location Search */}
-              <div className="flex-1 lg:max-w-md">
+              <div className="flex-1 lg:max-w-sm">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <input
                     type="text"
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary_color focus:border-transparent"
                     placeholder="Search location..."
                   />
                 </div>
               </div>
 
               {/* Filter Dropdowns */}
-              <div className="flex flex-1 space-x-2 lg:space-x-4">
-                <div className="flex-1">
+              <div className="lg:flex hidden lg:flex-1 space-x-2 lg:space-x-4">
+                <div className="flex-1 w-full">
                   <DropdownSelect
                     value={propertyType}
                     onChange={setPropertyType}
@@ -561,7 +565,7 @@ const PropertyListingPage: React.FC = () => {
               </button>
 
               {/* Search Button */}
-              <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center lg:flex-shrink-0">
+              <button className="hidden bg-primary_color text-white px-6 py-3 rounded-lg  transition-colors lg:flex items-center justify-center lg:flex-shrink-0">
                 <Search className="w-4 h-4" />
               </button>
             </div>
@@ -608,7 +612,7 @@ const PropertyListingPage: React.FC = () => {
                       setMinBathrooms("Any");
                       setMinSqft("Any");
                     }}
-                    className="px-4 py-3 text-gray-600 hover:text-gray-900 transition-colors"
+                    className="px-4 py-3 text-gray_text2 hover:text-gray_text2 transition-colors"
                   >
                     Clear Filters
                   </button>
@@ -620,24 +624,26 @@ const PropertyListingPage: React.FC = () => {
       </div>
 
       {/* Results Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto w-full px-2 py-6">
         {/* Results Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+          <div className="flex justify-between items-center w-full">
+            <h1 className="text-2xl font-medium  text-gray_text2 mb-2">
               Properties for Sale in{" "}
-              <span className="text-red-600">ABUJA, NIGERIA</span>
+              <span className="text-primary_color font-bold">
+                ABUJA, NIGERIA
+              </span>
             </h1>
-            <p className="text-gray-600">
-              <span className="font-semibold">{sortedProperties.length}</span>{" "}
-              Available
-            </p>
           </div>
 
-          <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+          <div className="flex justify-end items-center space-x-4 mt-4 sm:mt-0 w-full">
+            <p className="text-gray_text2">
+              <span className="font-bold text-primary_color">{sortedProperties.length}</span>{" "}
+              Available
+            </p>
             {/* Sort By */}
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Sort by:</span>
+              <span className="text-sm text-gray_text2">Sort by:</span>
               <DropdownSelect
                 value={
                   sortBy === "lowest-price"
@@ -670,21 +676,21 @@ const PropertyListingPage: React.FC = () => {
                 onClick={() => setViewType("grid")}
                 className={`p-2 ${
                   viewType === "grid"
-                    ? "bg-red-600 text-white"
-                    : "text-gray-600 hover:bg-gray-50"
+                    ? "bg-primary_color text-white"
+                    : "text-gray_text2 hover:bg-gray-50"
                 }`}
               >
-                <Grid3X3 className="w-4 h-4" />
+                <GridIcon />
               </button>
               <button
                 onClick={() => setViewType("list")}
                 className={`p-2 ${
                   viewType === "list"
-                    ? "bg-red-600 text-white"
-                    : "text-gray-600 hover:bg-gray-50"
+                    ? "bg-primary_color text-white"
+                    : "text-gray_text2 hover:bg-gray-50"
                 }`}
               >
-                <List className="w-4 h-4" />
+                <ListIcon />
               </button>
             </div>
           </div>
@@ -712,7 +718,7 @@ const PropertyListingPage: React.FC = () => {
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-2 text-gray-400 hover:text-gray_text2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               &lt;
             </button>
@@ -735,8 +741,8 @@ const PropertyListingPage: React.FC = () => {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`px-3 py-2 rounded ${
                     currentPage === pageNum
-                      ? "bg-red-600 text-white"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      ? "bg-primary_color text-white"
+                      : "text-gray_text2 hover:text-gray_text2 hover:bg-gray-100"
                   }`}
                 >
                   {pageNum}
@@ -751,7 +757,7 @@ const PropertyListingPage: React.FC = () => {
             {totalPages > 5 && currentPage < totalPages - 2 && (
               <button
                 onClick={() => setCurrentPage(totalPages)}
-                className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
+                className="px-3 py-2 text-gray_text2 hover:text-gray_text2 hover:bg-gray-100 rounded"
               >
                 {totalPages}
               </button>
@@ -762,7 +768,7 @@ const PropertyListingPage: React.FC = () => {
                 setCurrentPage(Math.min(totalPages, currentPage + 1))
               }
               disabled={currentPage === totalPages}
-              className="px-3 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-2 text-gray-400 hover:text-gray_text2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               &gt;
             </button>

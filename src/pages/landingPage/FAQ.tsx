@@ -38,9 +38,13 @@ const FAQSection = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-[20px] lg:text-[36px] font-bold text-primary_color1 mb-8 text-center mt-10">
+      <h1 className="text-[20px] lg:text-[36px] font-bold text-primary_color1 text-center mt-10">
         Frequently Asked Questions
       </h1>
+      <p className="text-gray_text3 text-center lg:text-lg font-normal mb-10">
+        We offer a full range of services to help you find a property, rent or
+        sell as needed.
+      </p>
 
       <div className="space-y-2">
         {faqs.map((faq, index) => (
@@ -48,14 +52,14 @@ const FAQSection = () => {
             key={index}
             className={`border-l-[6px] rounded-l-sm p-2 lg:p-6 transition-colors duration-200 ${
               activeIndex === index
-                ? "bg-[#fdefe6]  border-[#dfaaa2]"
+                ? "bg-[#FFF4F4]  border-primary_color1"
                 : "bg-white border-[#f6efe9]"
             }`}
           >
             <motion.button
               className="flex justify-start gap-2 lg:gap-4 items-center w-full text-left focus:outline-none p-4"
               onClick={() => toggleFAQ(index)}
-              whileHover={{ color: "#4f46e5" }}
+              whileHover={{ color: "" }}
               transition={{ duration: 0.2 }}
             >
               {" "}
@@ -104,7 +108,9 @@ const FAQSection = () => {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden px-4 pb-4 text-left"
                 >
-                  <p className="text-gray-600 text-sm lg:text-base ml-8 lg:ml-10">{faq.answer}</p>
+                  <p className="text-gray-600 text-sm lg:text-base ml-8 lg:ml-10">
+                    {faq.answer}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>

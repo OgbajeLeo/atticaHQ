@@ -69,7 +69,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
       links: [
         { name: "Buy a Property", href: "#" },
         { name: "Rent a Property", href: "#" },
-        { name: "Sell a Property", href: "#" },
+        // { name: "Sell a Property", href: "#" },
       ],
     },
     {

@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
     <div className="relative overflow-hidden mt-11 min-h-[700px] ">
       <div className="absolute rounded-[20px] max-w-7xl h-[700px] mx-auto" />
       <div
-        className="absolute rounded-[20px] max-w-7xl h-[700px] mx-auto inset-0 bg-black bg-cover bg-center opacity-80 bg-no-repeat"
+        className="absolute rounded-[12px] lg:rounded-[20px] max-w-7xl h-[700px] mx-auto inset-0 bg-black bg-cover bg-center opacity-80 bg-no-repeat"
         style={{
           backgroundImage: `url(${bg})`,
         }}
@@ -89,25 +89,25 @@ const Hero: React.FC = () => {
           className="w-full max-w-5xl mt-[100px]"
         >
           {/* Tabs */}
-          <div className="flex bg-white rounded-t-lg max-w-[251px]">
+          <div className="flex bg-white rounded-t-lg w-[144px] max-w-[251px]">
             {tabs.map((tab, index) => (
               <motion.button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
-                className={`flex-1 py-6 px-12 ${
+                className={`flex-1 py-2.5 lg:py-6 px-6 lg:px-12 ${
                   index == 0
                     ? "rounded-tl-lg"
                     : index == 1
                     ? "rounded-tr-lg"
                     : ""
-                } text-[15px] font-semibold transition-all duration-300 ${
+                } text-xs lg:text-[15px] font-semibold transition-all duration-300 ${
                   activeTab === tab
                     ? "bg-primary_color text-white shadow-md"
-                    : "text-gray-600 hover:text-gray-800"
+                    : "text-gray_text2 bg-white hover:text-gray-800"
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
               >
@@ -117,8 +117,8 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Search Form */}
-          <div className="flex items-end gap-6 bg-white rounded-b-2xl shadow-xl p-6 py-10 w-full">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
+          <div className="flex items-end gap-6 bg-white rounded-b-[12px] lg:rounded-b-2xl rounded-r-[12px] lg:rounded-r-2xl shadow-xl p-4 lg:p-6 lg:py-10 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 lg:gap-4 w-full">
               {/* Looking For */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -140,7 +140,7 @@ const Hero: React.FC = () => {
                         lookingFor: e.target.value,
                       }))
                     }
-                    className=" bg-[#FAFAFA] px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary_color focus:border-transparent transition-all w-[397px] duration-300 text-black placeholder-[#6E6D6D]"
+                    className=" bg-[#FAFAFA] text-xs lg:text-base px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary_color focus:border-transparent transition-all max-w-[397px] w-full duration-300 text-black placeholder-[#6E6D6D]"
                   />
                 </div>
               </motion.div>
@@ -150,6 +150,7 @@ const Hero: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.3 }}
+                className="hidden lg:block"
               >
                 <label className="block text-sm font-semibold text-black mb-2">
                   Location
@@ -182,6 +183,7 @@ const Hero: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.4 }}
+                className="hidden lg:block"
               >
                 <label className="block text-sm font-semibold text-black mb-2">
                   Price
@@ -218,7 +220,7 @@ const Hero: React.FC = () => {
                 boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="h-[47px] w-[158px] flex justify-center items-center bg-primary_color text-white px-8 py-4 rounded-xl font-semibold text-[15px]  transition-all duration-300 shadow"
+              className=" flex justify-center items-center bg-primary_color text-white px-4 lg:px-8 py-3 lg:py-4 rounded-lg lg:rounded-xl font-semibold text-xs lg:text-[15px]  transition-all duration-300 shadow w-[210px]"
             >
               Apply Filter
             </motion.button>

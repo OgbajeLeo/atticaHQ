@@ -1,6 +1,6 @@
 import Footer from "../../components/shared/Footer";
 import Navbar from "../../components/shared/Navbar";
-import FAQSection from "../landingPage/FAQ";
+import FeaturedProperties from "../landingPage/FeaturedProperty";
 import PropertyListingPage from "./PropertyListingPage";
 
 const BuyPage = () => {
@@ -8,7 +8,8 @@ const BuyPage = () => {
     <div className="">
       <Navbar />
       <PropertyListingPage />
-      <FAQSection />
+      <FeaturedProperties />
+
       <Footer />
     </div>
   );
