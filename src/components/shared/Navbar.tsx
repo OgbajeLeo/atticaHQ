@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
     { label: "Rent", href: "/rent" },
     { label: "Sell", href: "/sell" },
     { label: "About Us", href: "/about" },
-    { label: "Contact Us", href: "/contact" },
+    { label: "Contact Us", href: "/contact-us" },
   ];
 
   const toggleMobileMenu = () => {

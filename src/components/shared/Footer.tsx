@@ -40,7 +40,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   const linkHoverVariants: Variants = {
     hover: {
       scale: 1.05,
-      color: "#f59e0b",
+      color: "#A60F01",
       transition: { duration: 0.2, ease: "easeInOut" },
     },
     tap: { scale: 0.95 },
@@ -75,10 +75,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
     {
       title: "Quick Links",
       links: [
-        { name: "About Us", href: "#" },
+        { name: "About Us", href: "/about" },
         { name: "Tenancy Profiling", href: "#" },
-        { name: "Contact Us", href: "#" },
-        { name: "FAQ", href: "#" },
+        { name: "Contact Us", href: "/contact-us" },
+        { name: "FAQ", href: "#faq" },
       ],
     },
     {
@@ -217,7 +217,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               variants={itemVariants}
             >
               <motion.a
-                href="#"
+                href="/privacy"
                 className="text-white hover:text-white transition-colors duration-200"
                 variants={linkHoverVariants}
                 whileHover="hover"
@@ -226,7 +226,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                 Privacy Policy
               </motion.a>
               <motion.a
-                href="#"
+                href="/terms"
                 className="text-white hover:text-white transition-colors duration-200"
                 variants={linkHoverVariants}
                 whileHover="hover"

@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
           className="w-full max-w-5xl mt-[100px]"
         >
           {/* Tabs */}
-          <div className="flex bg-white rounded-t-lg w-[144px] max-w-[251px]">
+          {/* <div className="flex bg-white rounded-t-lg w-[144px] max-w-[251px]">
             {tabs.map((tab, index) => (
               <motion.button
                 key={tab}
@@ -114,7 +114,7 @@ const Hero: React.FC = () => {
                 {tab}
               </motion.button>
             ))}
-          </div>
+          </div> */}
 
           {/* Search Form */}
           <div className="flex items-end gap-6 bg-white rounded-b-[12px] lg:rounded-b-2xl rounded-r-[12px] lg:rounded-r-2xl shadow-xl p-4 lg:p-6 lg:py-10 w-full">

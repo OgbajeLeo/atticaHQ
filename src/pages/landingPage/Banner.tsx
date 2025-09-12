@@ -4,7 +4,7 @@ import { ExternalLink } from 'lucide-react';
 
 const Banner = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className=" flex items-center justify-center p-4 py-12">
       {/* Main Content Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -29,7 +29,7 @@ const Banner = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-[32px] text-primary_color font-semibold mb-3"
+              className="text-lg md:text-[31px] text-primary_color font-semibold mb-3"
             >
               Do you own a property? List with us
             </motion.h1>
@@ -50,7 +50,7 @@ const Banner = () => {
               transition={{ duration: 0.3, delay: 0.6 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className=" text-accent font-semibold p-4 w-full flex items-center gap-3 transition-colors"
+              className=" bg-primary_color rounded-md text-base lg:text-lg text-white font-semibold p-4  flex items-center gap-3 transition-colors"
             >
               List your Property
               <motion.div whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
