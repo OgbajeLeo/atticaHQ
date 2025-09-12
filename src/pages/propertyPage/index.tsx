@@ -1,13 +1,17 @@
 import Footer from "../../components/shared/Footer";
 import Navbar from "../../components/shared/Navbar";
-import PropertyOverview from "./PropertyOverview";
+import Banner from "../landingPage/Banner";
+import FeaturedProperties from "../landingPage/FeaturedProperty";
+import PropertyListing from "./PropertyOverview";
 
 const PropertyOverviewPage = () => {
   return (
-      <div>
-        <Navbar />
-        <PropertyOverview />
-        <Footer />
+    <div>
+      <Navbar />
+      <PropertyListing />
+      <FeaturedProperties />
+      <Banner />
+      <Footer />
     </div>
   );
 };

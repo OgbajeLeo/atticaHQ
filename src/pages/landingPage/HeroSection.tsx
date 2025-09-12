@@ -11,7 +11,7 @@ interface SearchFilters {
 }
 
 const Hero: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"Buy" | "Rent" >("Buy");
+  // const [activeTab, setActiveTab] = useState<"Buy" | "Rent" >("Buy");
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     type: "Buy",
     lookingFor: "",
@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
     price: "₦25,500,000",
   });
 
-  const tabs = ["Buy", "Rent"] as const;
+  // const tabs = ["Buy", "Rent"] as const;
   const locations = ["Abuja", "Lagos", "Kano", "Port Harcourt", "Ibadan"];
   const priceRanges = [
     "₦5,000,000",
@@ -29,10 +29,10 @@ const Hero: React.FC = () => {
     "₦100,000,000+",
   ];
 
-  const handleTabChange = (tab: "Buy" | "Rent" ) => {
-    setActiveTab(tab);
-    setSearchFilters((prev) => ({ ...prev, type: tab }));
-  };
+  // const handleTabChange = (tab: "Buy" | "Rent" ) => {
+  //   setActiveTab(tab);
+  //   setSearchFilters((prev) => ({ ...prev, type: tab }));
+  // };
 
   const handleSearch = () => {
     console.log("Searching with filters:", searchFilters);
