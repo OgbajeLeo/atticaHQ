@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { motion,type Variants, AnimatePresence } from 'framer-motion';
-import { Heart, MapPin, ArrowRight } from 'lucide-react';
-import SqrMtr from '../../components/iconComponent/SqrMtr';
-import BathIcon from '../../components/iconComponent/BathIcon';
-import BedIcon from '../../components/iconComponent/BedIcon';
+import React, { useState } from "react";
+import { motion, type Variants, AnimatePresence } from "framer-motion";
+import { Heart, MapPin, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import SqrMtr from "../../components/iconComponent/SqrMtr";
+import BathIcon from "../../components/iconComponent/BathIcon";
+import BedIcon from "../../components/iconComponent/BedIcon";
 
 interface Property {
   id: number;
@@ -19,56 +20,61 @@ interface Property {
 
 const FeaturedProperties: React.FC = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const navigate = useNavigate();
 
   const properties: Property[] = [
     {
       id: 1,
-      price: '₦300,000,000',
-      location: 'Guzape, Abuja',
-      title: 'Brand new luxury 9 Bedroom Duplex with Green Area and Bq',
+      price: "₦300,000,000",
+      location: "Guzape, Abuja",
+      title: "Brand new luxury 9 Bedroom Duplex with Green Area and Bq",
       beds: 4,
       baths: 3,
       sqft: 1200,
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=center',
-      forSale: true
+      image:
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=center",
+      forSale: true,
     },
     {
       id: 2,
-      price: '₦300,000,000',
-      location: 'Guzape, Abuja',
-      title: 'Brand new luxury 9 Bedroom Duplex with Green Area and Bq',
+      price: "₦300,000,000",
+      location: "Guzape, Abuja",
+      title: "Brand new luxury 9 Bedroom Duplex with Green Area and Bq",
       beds: 4,
       baths: 3,
       sqft: 1200,
-      image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&crop=center',
-      forSale: false
+      image:
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&crop=center",
+      forSale: false,
     },
     {
       id: 3,
-      price: '₦300,000,000',
-      location: 'Guzape, Abuja',
-      title: 'Brand new luxury 9 Bedroom Duplex with Green Area and Bq',
+      price: "₦300,000,000",
+      location: "Guzape, Abuja",
+      title: "Brand new luxury 9 Bedroom Duplex with Green Area and Bq",
       beds: 4,
       baths: 3,
       sqft: 1200,
-      image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop&crop=center',
-      forSale: true
+      image:
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop&crop=center",
+      forSale: true,
     },
     {
       id: 4,
-      price: '₦300,000,000',
-      location: 'Guzape, Abuja',
-      title: 'Brand new luxury 9 Bedroom Duplex with Green Area and Bq',
+      price: "₦300,000,000",
+      location: "Guzape, Abuja",
+      title: "Brand new luxury 9 Bedroom Duplex with Green Area and Bq",
       beds: 4,
       baths: 3,
       sqft: 1200,
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&crop=center',
-      forSale: false
-    }
+      image:
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&crop=center",
+      forSale: false,
+    },
   ];
 
   const toggleFavorite = (propertyId: number) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newFavorites = new Set(prev);
       if (newFavorites.has(propertyId)) {
         newFavorites.delete(propertyId);
@@ -79,21 +85,25 @@ const FeaturedProperties: React.FC = () => {
     });
   };
 
-  const containerVariants:Variants = {
+  const handleCardClick = (propertyId: number) => {
+    navigate(`/property/${propertyId}`);
+  };
+
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
-  const cardVariants:Variants = {
-    hidden: { 
-      opacity: 0, 
+  const cardVariants: Variants = {
+    hidden: {
+      opacity: 0,
       y: 50,
-      scale: 0.9
+      scale: 0.9,
     },
     visible: {
       opacity: 1,
@@ -101,23 +111,23 @@ const FeaturedProperties: React.FC = () => {
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     hover: {
       y: -8,
       scale: 1.02,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
-  const heartVariants:Variants = {
+  const heartVariants: Variants = {
     initial: { scale: 1 },
     tap: { scale: 0.8 },
-    hover: { scale: 1.1 }
+    hover: { scale: 1.1 },
   };
 
   return (
@@ -161,6 +171,7 @@ const FeaturedProperties: React.FC = () => {
               key={property.id}
               variants={cardVariants}
               whileHover="hover"
+              onClick={() => handleCardClick(property.id)}
               className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group"
             >
               {/* Image Container */}

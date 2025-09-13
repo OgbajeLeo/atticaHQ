@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence,type Variants } from "framer-motion";
-import { Heart,MapPin } from "lucide-react";
-import propertyImg from "../../assets/property.jpg"
+import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { Heart, MapPin } from "lucide-react";
+import propertyImg from "../../assets/property.jpg";
 import SqrMtr from "../../components/iconComponent/SqrMtr";
 import BathIcon from "../../components/iconComponent/BathIcon";
 import BedIcon from "../../components/iconComponent/BedIcon";
+import { useNavigate } from "react-router-dom";
 
 interface Property {
   id: number;
@@ -18,10 +19,11 @@ interface Property {
   isFavorite: boolean;
 }
 
-type Tab = "Buy" | "Rent";
+// type Tab = "Buy" | "Rent";
 
 const PropertyListings: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("Buy");
+  // const [activeTab, setActiveTab] = useState<Tab>("Buy");
+  const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([
     {
       id: 1,
@@ -150,6 +152,11 @@ const PropertyListings: React.FC = () => {
     },
   };
 
+
+  const handleCardClick = (propertyId: number) => {
+    navigate(`/property/${propertyId}`);
+  };
+
   return (
     <section className="bg-white py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-2 lg:px-0">
@@ -172,7 +179,7 @@ const PropertyListings: React.FC = () => {
           </motion.div>
 
           {/* Tabs */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -196,7 +203,7 @@ const PropertyListings: React.FC = () => {
                 {tab}
               </motion.button>
             ))}
-          </motion.div>
+          </motion.div> */}
         </div>
 
         {/* Property Grid */}
@@ -215,6 +222,7 @@ const PropertyListings: React.FC = () => {
                 y: -8,
                 transition: { duration: 0.3 },
               }}
+              onClick={() => handleCardClick(property.id)}
               className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               {/* Image */}
@@ -227,7 +235,10 @@ const PropertyListings: React.FC = () => {
 
                 {/* Favorite Button */}
                 <motion.button
-                  onClick={() => toggleFavorite(property.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(property.id);
+                  }}
                   className="absolute top-4 right-4 size-[34px] bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

@@ -18,9 +18,9 @@ const Navbar: React.FC = () => {
 
   const navItems: NavItem[] = [
     { label: "Home", href: "/" },
-    { label: "Buy", href: "/buy" },
+    // { label: "Buy", href: "/buy" },
     { label: "Rent", href: "/rent" },
-    { label: "Sell", href: "/sell" },
+    // { label: "Sell", href: "/sell" },
     { label: "About Us", href: "/about" },
     { label: "Contact Us", href: "/contact-us" },
   ];

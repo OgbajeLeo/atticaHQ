@@ -7,7 +7,6 @@ import {
   Bath,
   Maximize,
   Phone,
-  Mail,
   Heart,
   Share2,
   Clock,
@@ -586,23 +585,10 @@ const PropertyListing = () => {
                 <Phone className="w-4 h-4" />
                 Chat With Us
               </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 font-medium flex items-center justify-center gap-2">
-                <Mail className="w-4 h-4" />
-                Email Agent
-              </button>
+            
             </div>
 
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-                <div>
-                  <div className="font-medium">Property Agent</div>
-                  <div className="text-sm text-gray-600">
-                    Licensed Real Estate Agent
-                  </div>
-                </div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

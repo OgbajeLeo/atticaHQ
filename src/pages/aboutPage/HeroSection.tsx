@@ -6,7 +6,7 @@ import StatsCounter from "./Counter";
 const HeroSection: React.FC = () => {
   return (
     <div className="bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-12">
+      <div className="max-w-7xl mx-auto px-4 py-12 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
           {/* Left Side - Text Content */}
           <motion.div
