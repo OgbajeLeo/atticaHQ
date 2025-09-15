@@ -40,15 +40,15 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden mt-11 min-h-[700px] ">
-      <div className="absolute rounded-[20px] max-w-7xl h-[700px] mx-auto" />
+    <div className="relative overflow-hidden mt-11 min-h-[629px] mx-4">
+      <div className="absolute rounded-[20px] max-w-7xl h-[629px] mx-auto" />
       <div
-        className="absolute rounded-[12px] lg:rounded-[20px] max-w-7xl h-[700px] mx-auto inset-0 bg-black bg-cover bg-center opacity-80 bg-no-repeat"
+        className="absolute rounded-[12px] lg:rounded-[20px] max-w-7xl h-[629px] mx-auto inset-0 bg-black bg-cover bg-center opacity-80 bg-no-repeat"
         style={{
           backgroundImage: `url(${bg})`,
         }}
       />
-      <div className="absolute inset-0 bg-black/50  rounded-[20px] max-w-7xl h-[700px] mx-auto" />
+      <div className="absolute inset-0 bg-black/50  rounded-[20px] max-w-7xl h-[629px] mx-auto" />
 
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center  px-4 sm:px-6 lg:px-8 mt-20">

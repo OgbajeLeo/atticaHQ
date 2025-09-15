@@ -141,7 +141,7 @@ const FeaturedProperties: React.FC = () => {
           className="flex justify-between items-end mb-12"
         >
           <div>
-            <h2 className="text-[45px] font-bold text-black">
+            <h2 className="text-[31px] lg:text-[45px] font-bold text-black">
               Featured Properties
             </h2>
             <p className="text-lg text-gray_text3 max-w-2xl">

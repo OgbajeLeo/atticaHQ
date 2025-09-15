@@ -284,7 +284,7 @@ const PropertyListing = () => {
                 alt="Property main view"
                 className="w-full h-96 object-cover rounded-lg"
               />
-              <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
+              <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded text-sm font-medium">
                 For Sale
               </div>
 
@@ -307,7 +307,7 @@ const PropertyListing = () => {
                     alt={`Property view ${index + 1}`}
                     className={`w-20 h-16 sm:w-24 sm:h-20 object-cover rounded cursor-pointer border-2 transition-all duration-200 ${
                       activeImage === index
-                        ? "border-blue-500 ring-2 ring-blue-200"
+                        ? "border-gray_text2 ring-2 ring-blue-200"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                     onClick={() => setActiveImage(index)}
@@ -318,7 +318,7 @@ const PropertyListing = () => {
               {!showAllThumbnails && propertyData.images.length > 2 && (
                 <button
                   onClick={toggleShowAllThumbnails}
-                  className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+                  className="mt-3 text-sm text-gray_text2  font-medium transition-colors duration-200"
                 >
                   Show {propertyData.images.length - 2} more photos
                 </button>
@@ -342,7 +342,7 @@ const PropertyListing = () => {
                 {formatPrice(propertyData.price)}
               </h1>
               <div className="flex items-center gap-4 text-sm text-gray-600">
-                <div className=" bg-red-600 text-white px-3 py-1 rounded text-sm font-medium">
+                <div className=" bg-accent text-white px-3 py-1 rounded text-sm font-medium">
                   For Sale
                 </div>
                 <div className="items-center flex gap-2">
@@ -452,7 +452,7 @@ const PropertyListing = () => {
               <p className="text-gray-700 leading-relaxed mb-4">
                 {propertyData.propertyIntelligence}
               </p>
-              <button className="text-red-600 hover:text-red-700 font-medium">
+              <button className="text-accent  font-medium">
                 View Full Report →
               </button>
             </CollapsibleSection>
@@ -548,7 +548,7 @@ const PropertyListing = () => {
                   <div className="text-sm text-gray-600 mb-1">
                     Monthly payment
                   </div>
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-2xl font-bold text-gray_text2">
                     {formatPrice(propertyData.mortgage.monthlyPayment)}
                   </div>
                   <div className="text-sm text-gray-600 mt-1">2.75%</div>
@@ -578,7 +578,7 @@ const PropertyListing = () => {
             </p>
 
             <div className="space-y-4">
-              <button className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 font-medium">
+              <button className="w-full bg-accent text-white py-3 px-4 rounded-lg  font-medium">
                 Request a Tour
               </button>
               <button className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 font-medium flex items-center justify-center gap-2">
