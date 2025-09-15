@@ -337,17 +337,17 @@ const PropertyListing = () => {
 
           {/* Property Info */}
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex  items-center justify-between mb-4">
               <h1 className="text-3xl font-bold text-gray-900">
                 {formatPrice(propertyData.price)}
               </h1>
-              <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex  items-center gap-4 text-sm text-gray-600">
                 <div className=" bg-accent text-white px-3 py-1 rounded text-sm font-medium">
                   For Sale
                 </div>
                 <div className="items-center flex gap-2">
                   <button className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50">
-                    <Heart color="red" className="w-5 h-5" />
+                    <Heart className="w-5 h-5 text-primary_color" />
                   </button>
                   <button className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50">
                     <Share2 className="w-5 h-5" />
@@ -356,7 +356,7 @@ const PropertyListing = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-2 text-gray-600 mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 text-gray-600 mb-4">
               <div className="flex items-center gap-1">
                 <MapPin className="size-3" />
                 <span>{propertyData.title}</span>
@@ -366,7 +366,7 @@ const PropertyListing = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
               <div className="text-center flex items-center gap-2">
                 <div className="text-sm text-gray-600">Property Type</div>
                 <div className="font-semibold">{propertyData.propertyType}</div>
@@ -566,7 +566,7 @@ const PropertyListing = () => {
           <div
             ref={stickyRef}
             className={`bg-white border border-gray-200 rounded-lg p-6 ${
-              isSticky ? "lg:sticky lg:top-8" : ""
+              isSticky ? "lg:sticky lg:top-[110px]" : ""
             }`}
           >
             <h3 className="text-lg font-semibold mb-4">
