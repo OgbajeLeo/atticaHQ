@@ -1,7 +1,12 @@
-import './index.css'
-import AppRoutes from './routes/AppRoutes';
+import "./index.css";
+import AppRoutes from "./routes/AppRoutes";
+import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 
 function App() {
-  return <AppRoutes />;
+  return (
+    <AdminAuthProvider>
+      <AppRoutes />
+    </AdminAuthProvider>
+  );
 }
-export default App
+export default App;

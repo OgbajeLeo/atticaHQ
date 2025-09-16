@@ -8,8 +8,11 @@ import AboutPage from "../pages/aboutPage";
 import PrivacyPage from "../pages/privacyPage";
 import TermsPage from "../pages/termsPage";
 import RentPage from "../pages/rentPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 const LandingPage = lazy(() => import("../pages/landingPage"));
+const AdminDashboard = lazy(() => import("../pages/admin"));
+const AdminLogin = lazy(() => import("../pages/admin/AdminLogin"));
 
 export default function AppRoutes() {
   return (
@@ -26,10 +29,17 @@ export default function AppRoutes() {
 
           {/* property overview page with id dynamic route*/}
           <Route path="/property/:id" element={<PropertyOverviewPage />} />
-          {/* Protected admin route */}
-          {/* <Route element={<ProtectedRoute />}>
-                  <Route path="/admin" element={<Dashboard />} />
-                </Route> */}
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Suspense>
     </BrowserRouter>

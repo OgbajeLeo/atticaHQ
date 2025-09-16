@@ -1,24 +1,23 @@
-
 const HamburgerIcon = () => {
   return (
     <div>
       <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M6.66675 22.6667H17.3334M6.66675 16H25.3334M6.66675 9.33334H17.3334"
-          stroke="#1E293B"
-          stroke-width="2.66667"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          d="M5 17H13M5 12H19M5 7H13"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
   );
-}
+};
 
-export default HamburgerIcon
+export default HamburgerIcon;
