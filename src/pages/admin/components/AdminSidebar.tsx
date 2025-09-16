@@ -61,7 +61,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               <Logo />
             </div>
           )}
-          {!isMobile && (
+          {!isMobile ? (
             <button
               onClick={onToggle}
               className="p-2 rounded-lg hover:bg-primary_color transition-colors"
@@ -71,6 +71,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               ) : (
                 <CollapseIcon />
               )}
+            </button>
+          ) : (
+            <button
+              onClick={onToggle}
+              className="p-2 rounded-lg rotate-180 hover:bg-primary_color transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" />
             </button>
           )}
         </div>

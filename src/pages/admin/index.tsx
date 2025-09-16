@@ -78,11 +78,11 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 relative">
+    <div className="flex h-screen  relative">
       {/* Mobile Backdrop */}
       {isMobile && sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="fixed inset-0 bg-black/10  z-40"
           onClick={closeSidebar}
         />
       )}

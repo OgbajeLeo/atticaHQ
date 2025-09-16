@@ -30,12 +30,12 @@ import heroBG7 from "../../assets/contactHandshake.webp";
 import heroBG8 from "../../assets/Frame 2147223900-1.webp";
 import heroBG9 from "../../assets/Frame 2147223900-2.webp";
 import heroBG10 from "../../assets/Frame 2147223900.webp";
-import WhatsapIcon from "../../components/iconComponent/WhatsapIcon";
 import SqrMtr from "../../components/iconComponent/SqrMtr";
 import BathIcon from "../../components/iconComponent/BathIcon";
 import BedIcon from "../../components/iconComponent/BedIcon";
 import PropertyIcon from "../../components/iconComponent/PropertyIcon";
 import InteractiveMap from "../../components/InteractiveMap";
+import ChatIcon from "../../components/iconComponent/ChatIcon";
 
 // Dummy data structure
 const propertyData = {
@@ -919,7 +919,7 @@ const PropertyListing = () => {
                 Request a Tour
               </button>
               <button className="w-full border border-gray-200 text-primary_color py-3 px-1 text-sm lg:text-base rounded-lg  flex items-center justify-center gap-2">
-                <WhatsapIcon />
+                <ChatIcon color="green" />
                 Chat With Us
               </button>
             </div>

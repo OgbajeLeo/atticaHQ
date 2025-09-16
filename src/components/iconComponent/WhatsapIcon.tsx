@@ -1,7 +1,6 @@
-
 const WhatsapIcon = () => {
   return (
-    <div>
+    <div className="!z-40">
       <svg
         width="24"
         height="24"
@@ -48,6 +47,5 @@ const WhatsapIcon = () => {
       </svg>
     </div>
   );
-}
-
-export default WhatsapIcon
+};
+export default WhatsapIcon;

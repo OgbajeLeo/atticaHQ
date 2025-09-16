@@ -7,22 +7,18 @@ const DashboardContent: React.FC = () => {
     {
       title: "Total Listed Properties",
       value: "12,456",
-      color: "bg-pink-100",
     },
     {
       title: "Total Properties for Sale",
       value: "8,602",
-      color: "bg-pink-100",
     },
     {
       title: "Total Properties for Rent",
       value: "3,234",
-      color: "bg-pink-100",
     },
     {
       title: "Total Tour Request",
       value: "16",
-      color: "bg-pink-100",
     },
   ];
 
@@ -86,44 +82,44 @@ const DashboardContent: React.FC = () => {
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className={`${stat.color} p-6 rounded-lg`}>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">
+          <div key={index} className={`bg-[#FFF4F4] p-6 rounded-lg`}>
+            <h3 className="text-sm font-medium text-gray_text2 mb-5">
               {stat.title}
             </h3>
-            <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+            <p className="text-[31px] font-bold text-gray-900">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Newly Listed Properties */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray_text1">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">Newly Listed</h2>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#FAFAFA]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Listed Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Property Type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -175,7 +171,7 @@ const DashboardContent: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-gray-400 hover:text-gray-600">
+                    <button className="text-gray-400 hover:text-gray_text2">
                       <MoreVertical className="w-4 h-4" />
                     </button>
                   </td>
@@ -187,7 +183,7 @@ const DashboardContent: React.FC = () => {
       </div>
 
       {/* Tour Requests */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray_text1">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">Tour Requests</h2>
         </div>
@@ -196,19 +192,19 @@ const DashboardContent: React.FC = () => {
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Client's Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Email Address
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Message
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-sm text-gray_text3 tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -229,7 +225,7 @@ const DashboardContent: React.FC = () => {
                     {request.message}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-gray-400 hover:text-gray-600">
+                    <button className="text-gray-400 hover:text-gray_text2">
                       <MoreVertical className="w-4 h-4" />
                     </button>
                   </td>
