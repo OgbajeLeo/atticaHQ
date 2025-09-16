@@ -50,7 +50,6 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
     hover: {
       scale: 1.2,
       rotate: 5,
-      backgroundColor: "#f59e0b",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
     tap: { scale: 0.9 },
@@ -108,7 +107,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-7xl mx-auto px-2 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info Section */}
           <motion.div
@@ -149,13 +148,13 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
             </motion.div>
 
             {/* Social Icons */}
-            <motion.div className="flex space-x-4 pt-4" variants={itemVariants}>
+            <motion.div className="flex space-x-4 pt-4 w-full" variants={itemVariants}>
               {socialIcons.map(({ Icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 bg-primary_color rounded-full flex items-center justify-center text-white"
+                  className="w-10 h-10  bg-gray_text1/20 rounded-full flex items-center justify-center text-white border border-gray-400"
                   variants={socialIconVariants}
                   whileHover="hover"
                   whileTap="tap"

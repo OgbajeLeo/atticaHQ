@@ -159,7 +159,7 @@ const PropertyListings: React.FC = () => {
 
   return (
     <section className="bg-white py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-2 lg:px-0">
+      <div className="max-w-7xl mx-auto px-6 lg:px-0">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
           <motion.div
