@@ -86,11 +86,11 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen  p-2">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Profile Photo Section */}
         <div className="flex flex-col items-center mb-12">
           <div className="relative mb-4">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-700">
+            <div className="w-32 h-32 rounded-full shadow-lg overflow-hidden border-4 border-gray-100">
               <img
                 src={profileImage || "/api/placeholder/128/128"}
                 alt="Profile"

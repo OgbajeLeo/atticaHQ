@@ -378,7 +378,7 @@ const MessagesPage: React.FC = () => {
             <table className="min-w-full">
               <thead className="!text-gray_text3 bg-gray-50 !font-semibold">
                 <tr>
-                  <th className="px-6 py-3 text-left tracking-wider w-full">
+                  <th className="px-6 py-3 text-left tracking-wider">
                     Client's Name
                   </th>
                   <th className="px-6 py-3 text-left tracking-wider">Date</th>
