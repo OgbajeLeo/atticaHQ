@@ -10,33 +10,29 @@ import {
   removeAdminUser,
 } from "../utils/cookies";
 
-interface AdminUser {
+interface User {
   id: string;
   name: string;
   email: string;
   role: string;
 }
 
-interface AdminAuthContextType {
-  user: AdminUser | null;
+interface AuthContextType {
+  user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 }
 
-const AdminAuthContext = createContext<AdminAuthContextType | undefined>(
-  undefined
-);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AdminAuthProviderProps {
+interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<AdminUser | null>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -111,7 +107,7 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
     setUser(null);
   };
 
-  const value: AdminAuthContextType = {
+  const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
     login,
@@ -119,24 +115,13 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
     loading,
   };
 
-  // Debug logging
-  console.log("AdminAuthContext state:", {
-    user,
-    isAuthenticated: !!user,
-    loading,
-  });
-
-  return (
-    <AdminAuthContext.Provider value={value}>
-      {children}
-    </AdminAuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAdminAuth = (): AdminAuthContextType => {
-  const context = useContext(AdminAuthContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAdminAuth must be used within an AdminAuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

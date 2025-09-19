@@ -1,5 +1,10 @@
 import axios from "axios";
-import { getToken, removeToken } from "../cookies";
+import {
+  getToken,
+  removeToken,
+  getAdminToken,
+  removeAdminToken,
+} from "../cookies";
 
 // Create a separate export for network status management
 export let setNetworkError: (status: boolean) => void;
@@ -10,7 +15,7 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: false, 
+  withCredentials: false,
 });
 
 export const configureAxiosNetworkHandling = (
@@ -21,7 +26,8 @@ export const configureAxiosNetworkHandling = (
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const accessToken = getToken();
+    // Try admin token first, then fallback to regular token
+    const accessToken = getAdminToken() || getToken();
 
     if (accessToken) {
       config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -61,6 +67,7 @@ axiosInstance.interceptors.response.use(
         throw new Error(error.response.data.message || "Unauthorized access");
       }
       if (error.response.data.message === "Token expired") {
+        removeAdminToken();
         removeToken();
         throw new Error(error.response.data.message || "Unauthorized access");
       }
@@ -68,6 +75,7 @@ axiosInstance.interceptors.response.use(
         error.response.data.message ===
         "Session is not active. Please login again"
       ) {
+        removeAdminToken();
         removeToken();
         // const loginPageUrl = "/login";
         // window.location.href = loginPageUrl;

@@ -2,12 +2,13 @@
 import { axios$ } from "../";
  
 
-export const login = async (email: string, password: string) => {
+
+export const adminLogin = async (email: string, password: string) => {
   try {
-    const response = await axios$.post("/login", JSON.stringify({
+    const response = await axios$.post("/users/login", {
       email,
       password,
-    }));
+    });
     return response;
   }
   catch (error) {
@@ -15,9 +16,19 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const AllCourses = async () => {
+export const Register = async (data: object) => {
   try {
-    const response = await axios$.get(`/courses`);
+    const response = await axios$.post("/users/register", data);
+    return response;
+  }
+  catch (error) {
+    throw error;
+  }
+};
+
+export const AllProperties = async () => {
+  try {
+    const response = await axios$.get(`/properties`);
     return response;
   } catch (error) {
     throw error;
@@ -27,6 +38,14 @@ export const AllCourses = async () => {
 export const GetCourseByID = async (id: string) => {
   try {
     const response = await axios$.get(`/courses/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const LoggedUser = async () => {
+  try {
+    const response = await axios$.get(`/users/me`);
     return response;
   } catch (error) {
     throw error;

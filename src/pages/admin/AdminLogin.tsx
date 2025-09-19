@@ -11,6 +11,7 @@ const AdminLogin: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAdminAuth();
 
@@ -25,16 +26,22 @@ const AdminLogin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
-    const success = await login(formData.email, formData.password);
-    if (success) {
-      navigate("/admin/dashboard");
-    } else {
-      setError("Invalid email or password");
+    try {
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        navigate("/admin/dashboard");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Redirect if already authenticated
   if (isAuthenticated) {
     navigate("/admin/dashboard");
     return null;
@@ -126,11 +133,11 @@ const AdminLogin: React.FC = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-primary_color accent-accent focus:ring-primary_color border-gray-300 rounded"
+                  className="h-4 w-4 text-primary_color accent-primary_color focus:ring-primary_color rounded"
                 />
                 <label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm  text-gray-900"
+                  className="ml-2 block text-sm  text-primary_color select-none"
                 >
                   Remember me
                 </label>
@@ -152,9 +159,10 @@ const AdminLogin: React.FC = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-primary_color hover:bg-primary_color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_color"
+                disabled={isLoading}
+                className="group relative w-full h-11 flex justify-center items-center px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-primary_color hover:bg-primary_color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_color disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign in
+                {isLoading ? <span className="loader"></span> : "Sign in"}
               </button>
             </div>
           </form>

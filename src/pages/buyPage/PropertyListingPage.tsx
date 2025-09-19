@@ -25,7 +25,7 @@ interface Property {
   beds: number;
   baths: number;
   sqft: number;
-  image: string;
+  images: string[];
   forSale: boolean;
 }
 
@@ -55,8 +55,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 5,
       baths: 3,
       sqft: 1200,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -67,8 +70,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 3,
       baths: 3,
       sqft: 1200,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -79,8 +85,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 4,
       baths: 3,
       sqft: 1200,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -91,8 +100,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 5,
       baths: 3,
       sqft: 1200,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752734-c1b6d75d3547?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -103,8 +115,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 3,
       baths: 2,
       sqft: 900,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -115,8 +130,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 4,
       baths: 3,
       sqft: 1400,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752734-c1b6d75d3547?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -127,8 +145,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 3,
       baths: 2,
       sqft: 1000,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600566752734-c1b6d75d3547?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -139,8 +160,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 5,
       baths: 4,
       sqft: 1600,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600566752734-c1b6d75d3547?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
     {
@@ -151,8 +175,11 @@ const PropertyListingPage: React.FC = () => {
       beds: 4,
       baths: 3,
       sqft: 1300,
-      image:
+      images: [
         "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&crop=center",
+      ],
       forSale: true,
     },
   ];
@@ -331,36 +358,59 @@ const PropertyListingPage: React.FC = () => {
       {/* Image */}
       <div
         className={`relative overflow-hidden ${
-          viewType === "list" ? "w-1/2 flex-shrink-0" : ""
+          viewType === "list" ? "w-2/3 flex-shrink-0" : ""
         }`}
       >
-        <img
-          src={property.image}
-          alt={property.title}
-          className={`object-cover transition-transform duration-500 group-hover:scale-105 ${
-            viewType === "list" ? "w-full h-full" : "w-full h-48"
-          }`}
-        />
+        {viewType === "list" ? (
+          <div className="flex h-full">
+            {/* Main Image - takes 2/3 of the image container */}
+            <div className="w-2/3 relative overflow-hidden">
+              <img
+                src={property.images[0]}
+                alt={property.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
 
-        {/* Heart Button */}
-        {viewType === "grid" && (
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleFavorite(property.id);
-            }}
-            className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all duration-200"
-          >
-            <Heart
-              className={`w-4 h-4 transition-colors duration-200 ${
-                favorites.has(property.id)
-                  ? "fill-primary_color text-primary_color"
-                  : "text-gray-400 hover:text-primary_color"
-              }`}
+            {/* Small Images - takes 1/3 of the image container */}
+            <div className="w-1/3 flex flex-col">
+              {property.images.slice(1, 4).map((image, index) => (
+                <div key={index} className="flex-1 relative overflow-hidden">
+                  <img
+                    src={image}
+                    alt={`${property.title} - Image ${index + 2}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            <img
+              src={property.images[0]}
+              alt={property.title}
+              className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
             />
-          </motion.button>
+            {/* Heart Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(property.id);
+              }}
+              className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all duration-200"
+            >
+              <Heart
+                className={`w-4 h-4 transition-colors duration-200 ${
+                  favorites.has(property.id)
+                    ? "fill-primary_color text-primary_color"
+                    : "text-gray-400 hover:text-primary_color"
+                }`}
+              />
+            </motion.button>
+          </>
         )}
       </div>
 
@@ -468,7 +518,7 @@ const PropertyListingPage: React.FC = () => {
 
             <div className="flex items-center justify-between space-x-4 text-xs w-full text-gray_text2">
               <div className="flex gap-2 items-center">
-                <BedIcon  />
+                <BedIcon />
                 <span>{property.beds} Beds</span>
               </div>
 
@@ -638,7 +688,9 @@ const PropertyListingPage: React.FC = () => {
 
           <div className="flex justify-end items-center space-x-4 mt-4 sm:mt-0 w-full">
             <p className="text-gray_text2">
-              <span className="font-bold text-primary_color">{sortedProperties.length}</span>{" "}
+              <span className="font-bold text-primary_color">
+                {sortedProperties.length}
+              </span>{" "}
               Available
             </p>
             {/* Sort By */}

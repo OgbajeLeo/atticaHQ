@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, User, ChevronRight } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import ProfileIcon from "../iconComponent/ProfileIcon";
 import WhatsapIcon from "../iconComponent/WhatsapIcon";
 import HamburgerIcon from "../iconComponent/HamburgerIcon";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface NavItem {
   label: string;
@@ -15,6 +16,8 @@ interface NavItem {
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   const navItems: NavItem[] = [
     { label: "Home", href: "/" },
@@ -80,17 +83,49 @@ const Navbar: React.FC = () => {
               <span>Chat With Us</span>
             </motion.button>
 
-            <motion.button
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-primary_color text-white px-4 py-3 rounded-xl text-[15px] font-medium flex items-center space-x-2 transition-colors duration-200"
-            >
-              <ProfileIcon />
-              <span>Log In</span>
-            </motion.button>
+            {isAuthenticated ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="flex items-center space-x-3"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-10 h-10 bg-primary_color text-white rounded-full flex items-center justify-center transition-colors duration-200"
+                >
+                  <span className="text-sm font-semibold">
+                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  </span>
+                </motion.button>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-900">
+                    {user?.name || "User"}
+                  </span>
+                  
+                  <button
+                    onClick={logout}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.button
+                onClick={() => navigate("/admin/login")}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-primary_color text-white px-4 py-3 rounded-xl text-[15px] font-medium flex items-center space-x-2 transition-colors duration-200"
+              >
+                <ProfileIcon />
+                <span>Log In</span>
+              </motion.button>
+            )}
           </div>
 
           {/* Mobile profile button - Right side */}
@@ -109,12 +144,29 @@ const Navbar: React.FC = () => {
               <img src={logo} alt="logo" className="max-h-10" />
             </motion.div>
 
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none focus:text-gray-900 p-2 rounded-full bg-[#FAFAFA] border border-gray-300"
-            >
-              <User size={24} />
-            </motion.button>
+            {isAuthenticated ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                className="w-10 h-10 bg-primary_color text-white rounded-full flex items-center justify-center transition-colors duration-200"
+              >
+                <span className="text-sm font-semibold">
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                </span>
+              </motion.button>
+            ) : (
+                <motion.button
+                onClick={() => navigate("/admin/login")}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-primary_color text-white px-4 py-3 rounded-xl text-[15px] font-medium flex items-center space-x-2 transition-colors duration-200"
+              >
+                <ProfileIcon />
+                <span>Log In</span>
+              </motion.button>
+            )}
           </div>
         </div>
       </div>
@@ -146,22 +198,46 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* User Profile Section */}
-            <div className="px-6 py-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-[#FFF4F4] rounded-full flex items-center justify-center">
-                    <span className="text-gray_text3 font-bold text-xl">C</span>
+            {isAuthenticated ? (
+              <div className="px-6 py-6 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-primary_color rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xl">
+                        {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {user?.name || "User"}
+                      </h3>
+                      <p className="text-sm text-gray-600">{user?.email}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Chizoba Odita
-                    </h3>
-                    <p className="text-sm text-gray-600">View your Account</p>
-                  </div>
+                  <button
+                    onClick={logout}
+                    className="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    Logout
+                  </button>
                 </div>
-                <ChevronRight size={20} className="text-gray-400" />
               </div>
-            </div>
+            ) : (
+              <div className="px-6 hidden py-6 border-b border-gray-100">
+                {/* <motion.button
+                  onClick={() => navigate("/admin")}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-primary_color text-white px-4 py-3 rounded-xl text-[15px] font-medium flex items-center space-x-2 transition-colors duration-200"
+                >
+                  <ProfileIcon />
+                  <span>Log In</span>
+                </motion.button> */}
+              </div>
+            )}
 
             {/* Navigation Items */}
             <div className="px-6 py-6 space-y-2">
