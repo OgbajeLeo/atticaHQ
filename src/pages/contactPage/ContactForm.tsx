@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Check, AlertCircle } from "lucide-react";
-import handshake from "../../assets/contactHandshake.webp"
+import handshake from "../../assets/contactHandshake.webp";
 import MessageIcon from "../../components/iconComponent/MessageIcon";
 import PhoneIcon from "../../components/iconComponent/PhoneIcon";
 import ChatIcon from "../../components/iconComponent/ChatIcon";
 interface FormData {
+  fullName: string;
   email: string;
   message: string;
 }
 
 interface FormErrors {
+  fullName?: string;
   email?: string;
   message?: string;
 }
 
 const ContactUI: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    fullName: "",
     email: "",
     message: "",
   });
@@ -26,6 +29,12 @@ const ContactUI: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    } else if (formData.fullName.trim().length < 2) {
+      newErrors.fullName = "Full name must be at least 2 characters";
+    }
 
     if (!formData.email) {
       newErrors.email = "Email address is required";
@@ -47,12 +56,12 @@ const ContactUI: React.FC = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-
+console.log(formData, "formData")
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setFormData({ email: "", message: "" });
+      setFormData({ fullName: "", email: "", message: "" });
 
       // Reset success message after 3 seconds
       setTimeout(() => setIsSubmitted(false), 3000);
@@ -96,8 +105,11 @@ const ContactUI: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-              <img src={handshake} alt="handshake" className="w-full h-full object-cover" />
-           
+            <img
+              src={handshake}
+              alt="handshake"
+              className="w-full h-full object-cover"
+            />
           </motion.div>
 
           {/* Right side - Contact Form */}
@@ -129,6 +141,42 @@ const ContactUI: React.FC = () => {
             )}
 
             <div className="space-y-6">
+              {/* Full Name Field */}
+              <div>
+                <label
+                  htmlFor="fullName"
+                  className="block text-lg font-semibold text-gray_text3 mb-2"
+                >
+                  Full Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="fullName"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      handleInputChange("fullName", e.target.value)
+                    }
+                    placeholder="Enter your full name"
+                    className={`w-full px-4 py-4 bg-[#FAFAFA] border outline-none rounded-xl focus:ring-2 focus:ring-primary_color focus:border-primary_color transition-all duration-200 text-gray_text3 placeholder-gray-500 ${
+                      errors.fullName
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  />
+                </div>
+                {errors.fullName && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1.5 flex items-center space-x-2 text-red-600 text-sm"
+                  >
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{errors.fullName}</span>
+                  </motion.div>
+                )}
+              </div>
+
               {/* Email Field */}
               <div>
                 <label
@@ -254,7 +302,7 @@ const ContactUI: React.FC = () => {
             className=" bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md text-left transition-shadow duration-200"
           >
             <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
-              <MessageIcon />
+              <MessageIcon isActive={true} />
             </div>
             <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
               Send Us a Mail
@@ -279,7 +327,9 @@ const ContactUI: React.FC = () => {
             <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
               <PhoneIcon />
             </div>
-            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">Call Us</h3>
+            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
+              Call Us
+            </h3>
             <p className="text-gray_text2 text-base lg:text-lg mb-4 leading-relaxed">
               Speak to our friendly team.
             </p>
@@ -300,7 +350,9 @@ const ContactUI: React.FC = () => {
             <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
               <ChatIcon />
             </div>
-            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">Live Chat</h3>
+            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
+              Live Chat
+            </h3>
             <p className="text-gray_text2 text-base lg:text-lg mb-4 leading-relaxed">
               Speak to our friendly team.
             </p>

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import FilterIcon from "../../../components/iconComponent/FilterIcon";
-import NewPropertyModal from "../../../components/modals/NewPropertyModal";
+import NewPropertyModal from "./NewPropertyModal";
 
 interface Property {
   id: number;

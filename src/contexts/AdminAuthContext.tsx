@@ -15,6 +15,7 @@ interface AdminUser {
   name: string;
   email: string;
   role: string;
+  photo?: string;
 }
 
 interface AdminAuthContextType {
@@ -23,6 +24,7 @@ interface AdminAuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(
@@ -58,7 +60,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const response = (await AuthApi.adminLogin(email, password)) as any;
-
       if (response && response) {
         const { status, token } = response;
 
@@ -75,6 +76,10 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
               name: `${userResponse.data.first_name} ${userResponse.data.last_name}`,
               email: userResponse.data.email,
               role: "admin",
+              photo:
+                userResponse.data.photo !== "user_image"
+                  ? userResponse.data.photo
+                  : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23374151'/%3E%3Ccircle cx='64' cy='45' r='20' fill='%236B7280'/%3E%3Cpath d='M32 100c0-17.7 14.3-32 32-32s32 14.3 32 32' fill='%236B7280'/%3E%3C/svg%3E",
             };
 
             setAdminUser(JSON.stringify(userData), expiresIn);
@@ -85,6 +90,8 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
               name: "Admin User",
               email: email,
               role: "admin",
+              photo:
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23374151'/%3E%3Ccircle cx='64' cy='45' r='20' fill='%236B7280'/%3E%3Cpath d='M32 100c0-17.7 14.3-32 32-32s32 14.3 32 32' fill='%236B7280'/%3E%3C/svg%3E",
             };
 
             setAdminUser(JSON.stringify(userData), expiresIn);
@@ -111,20 +118,38 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const userResponse = (await AuthApi.LoggedUser()) as any;
+      if (userResponse) {
+        const userData = {
+          id: userResponse.data.id.toString(),
+          name: `${userResponse.data.first_name} ${userResponse.data.last_name}`,
+          email: userResponse.data.email,
+          role: "admin",
+          photo:
+            userResponse.data.photo !== "user_image"
+              ? userResponse.data.photo
+              : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23374151'/%3E%3Ccircle cx='64' cy='45' r='20' fill='%236B7280'/%3E%3Cpath d='M32 100c0-17.7 14.3-32 32-32s32 14.3 32 32' fill='%236B7280'/%3E%3C/svg%3E",
+        };
+
+        const expiresIn = 24 * 60 * 60;
+        setAdminUser(JSON.stringify(userData), expiresIn);
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error("Error refreshing user data:", error);
+    }
+  };
+
   const value: AdminAuthContextType = {
     user,
     isAuthenticated: !!user,
     login,
     logout,
     loading,
+    refreshUser,
   };
-
-  // Debug logging
-  console.log("AdminAuthContext state:", {
-    user,
-    isAuthenticated: !!user,
-    loading,
-  });
 
   return (
     <AdminAuthContext.Provider value={value}>

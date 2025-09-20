@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./components/AdminSidebar";
 import AdminRoutes from "./AdminRoutes";
-import { Bell, Mail, User } from "lucide-react";
+import { Bell, Mail } from "lucide-react";
 import { useAdminAuth } from "../../contexts/AdminAuthContext";
 import HamburgerIcon from "../../components/iconComponent/HamburgerIcon";
 
@@ -149,7 +149,7 @@ const AdminDashboard: React.FC = () => {
               {/* User Profile */}
               <div className="flex items-center space-x-2 md:space-x-3">
                 <div className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+                  <img src={user?.photo} alt="profile" className="w-7 h-7 md:w-8 md:h-8 rounded-full" />
                 </div>
                 <span className="text-gray-700 font-medium text-sm md:text-base hidden sm:block">
                   {user?.name || "Admin User"}

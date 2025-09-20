@@ -96,7 +96,8 @@ const Navbar: React.FC = () => {
                   className="w-10 h-10 bg-primary_color text-white rounded-full flex items-center justify-center transition-colors duration-200"
                 >
                   <span className="text-sm font-semibold">
-                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                    <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
+                   
                   </span>
                 </motion.button>
                 <div className="flex flex-col">
@@ -147,10 +148,10 @@ const Navbar: React.FC = () => {
             {isAuthenticated ? (
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 bg-primary_color text-white rounded-full flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10  text-white rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <span className="text-sm font-semibold">
-                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
                 </span>
               </motion.button>
             ) : (
@@ -202,9 +203,9 @@ const Navbar: React.FC = () => {
               <div className="px-6 py-6 border-b border-gray-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-primary_color rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12  rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-xl">
-                        {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                        <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
                       </span>
                     </div>
                     <div>

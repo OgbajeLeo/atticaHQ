@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { PropertyFormData } from "../NewPropertyModal";
+import {
+  validateAmenitiesStep,
+  getFieldError,
+  type ValidationError,
+} from "../../../../utils/validation";
 
 interface AmenitiesStepProps {
   formData: PropertyFormData;
@@ -78,9 +83,27 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
   formData,
   updateFormData,
   onNext,
-//   onPrev,
+  //   onPrev,
 }) => {
   const [newAmenity, setNewAmenity] = useState("");
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  // Validate form data whenever it changes
+  useEffect(() => {
+    const validationResult = validateAmenitiesStep(formData);
+    setErrors(validationResult.errors);
+  }, [formData]);
+
+  const handleNext = () => {
+    const validationResult = validateAmenitiesStep(formData);
+    if (validationResult.isValid) {
+      onNext();
+    } else {
+      setErrors(validationResult.errors);
+      setTouched((prev) => ({ ...prev, amenities: true }));
+    }
+  };
 
   const toggleAmenity = (amenity: string) => {
     const exists = formData.amenities.includes(amenity);
@@ -88,6 +111,7 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
       ? formData.amenities.filter((a) => a !== amenity)
       : [...formData.amenities, amenity];
     updateFormData({ amenities: updated });
+    setTouched((prev) => ({ ...prev, amenities: true }));
   };
 
   const addNewAmenity = () => {
@@ -156,10 +180,19 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
         </div>
       </div>
 
+      {/* Error Message */}
+      {touched.amenities && getFieldError(errors, "Amenities") && (
+        <div className="text-center">
+          <p className="text-sm text-red-600">
+            {getFieldError(errors, "Amenities")}
+          </p>
+        </div>
+      )}
+
       {/* Action Buttons */}
       <div className="flex justify-center pt-6">
         <button
-          onClick={onNext}
+          onClick={handleNext}
           className="w-full max-w-md bg-primary_color text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors font-medium"
         >
           Continue

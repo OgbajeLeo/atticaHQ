@@ -3,18 +3,21 @@ import OverviewStep from "./steps/OverviewStep";
 import ListingDetailsStep from "./steps/ListingDetailsStep";
 import AmenitiesStep from "./steps/AmenitiesStep";
 import LocationStep from "./steps/LocationStep";
+import {
+  validateOverviewStep,
+  validateListingDetailsStep,
+  validateAmenitiesStep,
+  validateLocationStep,
+} from "../../../utils/validation";
 
 export interface PropertyFormData {
-  // Overview Step
   propertyTitle: string;
   propertyType: string;
   category: string;
   annualPrice: string;
   monthlyPrice: string;
   description: string;
-  photos: File[];
-
-  // Listing Details Step
+  photos: string[];
   sizeInFt: string;
   numberOfBathrooms: string;
   numberOfGarages: string;
@@ -27,13 +30,10 @@ export interface PropertyFormData {
   floorsNo: string;
   architectureType: string;
   videoUrl: string;
-
-  // Amenities Step
   amenities: string[];
-
-  // Location Step
   propertyLocation: string;
   closestLandmark: string;
+  coordinates?: string;
 }
 
 interface NewPropertyModalProps {
@@ -54,7 +54,7 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
     monthlyPrice: "₦5,000,000",
     description: "",
     photos: [],
-    sizeInFt: "3,210",
+    sizeInFt: "3210",
     numberOfBathrooms: "3",
     numberOfGarages: "2",
     yearBuilt: "2001",
@@ -83,7 +83,25 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
   };
 
   const nextStep = () => {
-    if (currentStep < steps.length) {
+    // Validate current step before proceeding
+    let isValid = true;
+
+    switch (currentStep) {
+      case 1:
+        isValid = validateOverviewStep(formData).isValid;
+        break;
+      case 2:
+        isValid = validateListingDetailsStep(formData).isValid;
+        break;
+      case 3:
+        isValid = validateAmenitiesStep(formData).isValid;
+        break;
+      case 4:
+        isValid = validateLocationStep(formData).isValid;
+        break;
+    }
+
+    if (isValid && currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -95,44 +113,17 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
   };
 
   const handleSubmit = () => {
-    console.log("=== PROPERTY FORM SUBMISSION ===");
-    console.log("Complete Property Data:", formData);
-    console.log("=== FORM DATA BREAKDOWN ===");
-    console.log("Overview Step:", {
-      propertyTitle: formData.propertyTitle,
-      propertyType: formData.propertyType,
-      category: formData.category,
-      annualPrice: formData.annualPrice,
-      monthlyPrice: formData.monthlyPrice,
-      description: formData.description,
-      photosCount: formData.photos.length,
-    });
-    console.log("Listing Details Step:", {
-      sizeInFt: formData.sizeInFt,
-      numberOfBedrooms: formData.numberOfBedrooms,
-      numberOfBathrooms: formData.numberOfBathrooms,
-      numberOfKitchens: formData.numberOfKitchens,
-      numberOfGarages: formData.numberOfGarages,
-      yearBuilt: formData.yearBuilt,
-      floodWarning: formData.floodWarning,
-      negotiable: formData.negotiable,
-      isFeatured: formData.isFeatured,
-      floorsNo: formData.floorsNo,
-      architectureType: formData.architectureType,
-      videoUrl: formData.videoUrl,
-    });
-    console.log("Amenities Step:", {
-      amenities: formData.amenities,
-      amenitiesCount: formData.amenities.length,
-    });
-    console.log("Location Step:", {
-      propertyLocation: formData.propertyLocation,
-      closestLandmark: formData.closestLandmark,
-    });
-    console.log("=== END OF FORM DATA ===");
+    // Final validation before submission
+    const finalValidation = validateLocationStep(formData);
+
+    if (!finalValidation.isValid) {
+      alert("Please complete all required fields before submitting.");
+      return;
+    }
+
+    console.log(formData, "=== END OF FORM DATA ===");
 
     // Here you would typically send the data to your API endpoint
-    // For now, just logging to console as requested
     alert(
       "Property data has been logged to console. Check the browser console for details."
     );
@@ -144,13 +135,21 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
       .map((step, index) => {
         if (index + 1 < currentStep) {
           return (
-            <span onClick={() => setCurrentStep(step.id)} key={step.id} className="text-gray-500 cursor-pointer">
+            <span
+              onClick={() => setCurrentStep(step.id)}
+              key={step.id}
+              className="text-gray-500 cursor-pointer"
+            >
               {step.title} &nbsp; &gt;
             </span>
           );
         } else if (index + 1 === currentStep) {
           return (
-            <span onClick={() => setCurrentStep(step.id)} key={step.id} className="text-primary_color font-semibold cursor-pointer">
+            <span
+              onClick={() => setCurrentStep(step.id)}
+              key={step.id}
+              className="text-primary_color font-semibold cursor-pointer"
+            >
               {step.title} &nbsp; &gt;
             </span>
           );

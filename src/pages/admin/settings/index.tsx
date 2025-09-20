@@ -1,16 +1,34 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useAdminAuth } from "../../../contexts/AdminAuthContext";
+import { editPicture } from "../../../utils/api/authApi";
 
 const SettingsPage: React.FC = () => {
+  const { user, loading: authLoading, refreshUser } = useAdminAuth();
+
   const [profileData, setProfileData] = useState({
-    fullName: "Chizoba Odita",
-    email: "strongestavenger@emample.com",
+    fullName: "",
+    email: "",
   });
 
   const [currentPassword, setCurrentPassword] = useState("********");
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImageBase64, setProfileImageBase64] = useState<string | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Update profile data when user data is available
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        fullName: user.name || "",
+        email: user.email || "",
+      });
+      setProfileImage(user.photo || null);
+    }
+  }, [user]);
 
   const handleInputChange = (field: string, value: string) => {
     setProfileData((prev) => ({
@@ -50,7 +68,9 @@ const SettingsPage: React.FC = () => {
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfileImage(e.target?.result as string);
+        const result = e.target?.result as string;
+        setProfileImage(result);
+        setProfileImageBase64(result); // Store base64 for API call
       };
       reader.readAsDataURL(file);
     }
@@ -59,15 +79,12 @@ const SettingsPage: React.FC = () => {
   const handleSaveChanges = async () => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Here you would typically send the data to your backend
-      console.log("Saving profile data:", {
-        ...profileData,
-        password: isPasswordEditable ? currentPassword : undefined,
-        profileImage: profileImage,
-      });
+      // Update profile image if a new one was selected
+      if (profileImageBase64 && profileImageBase64 !== user?.photo) {
+        await editPicture(profileImageBase64);
+        // Refresh user data to get the updated photo
+        await refreshUser();
+      }
 
       // Reset password field if it was being edited
       if (isPasswordEditable) {
@@ -75,14 +92,31 @@ const SettingsPage: React.FC = () => {
         setCurrentPassword("********");
       }
 
+      // Clear the base64 state after successful update
+      setProfileImageBase64(null);
+
       alert("Settings saved successfully!");
     } catch (error) {
       console.error("Error saving settings:", error);
-      alert("Error saving settings. Please try again.");
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      alert(`Error saving settings: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Show loading state while user data is being fetched
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary_color mx-auto mb-4"></div>
+          <p className="text-gray_text3">Loading user data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen  p-2">
@@ -92,11 +126,10 @@ const SettingsPage: React.FC = () => {
           <div className="relative mb-4">
             <div className="w-32 h-32 rounded-full shadow-lg overflow-hidden border-4 border-gray-100">
               <img
-                src={profileImage || "/api/placeholder/128/128"}
+                src={profileImage || user?.photo || "/api/placeholder/128/128"}
                 alt="Profile"
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  // Fallback to a default profile image or placeholder
                   e.currentTarget.src =
                     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23374151'/%3E%3Ccircle cx='64' cy='45' r='20' fill='%236B7280'/%3E%3Cpath d='M32 100c0-17.7 14.3-32 32-32s32 14.3 32 32' fill='%236B7280'/%3E%3C/svg%3E";
                 }}
@@ -188,7 +221,7 @@ const SettingsPage: React.FC = () => {
                     }`}
                     placeholder={
                       isPasswordEditable
-                        ? "Enter current password"
+                        ? "Enter new password"
                         : "Click Change to edit"
                     }
                   />

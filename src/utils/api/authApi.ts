@@ -52,9 +52,11 @@ export const LoggedUser = async () => {
   }
 };
 
-export const AddCourse = async (data: object) => {
+export const editPicture = async (data: string) => {
   try {
-    const response = await axios$.post(`/courses`, data);
+    const response = await axios$.put(`/users/update`, {
+photo:data
+    });
     return response;
   } catch (error) {
     throw error;
