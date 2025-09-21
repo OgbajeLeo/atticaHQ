@@ -1,14 +1,14 @@
 import React from "react";
 import { motion,type Variants } from "framer-motion";
 import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
   Mail,
   Phone,
 } from "lucide-react";
 import Logo from "../iconComponent/Logo";
+import FacebookIcon from "../iconComponent/socialIcons/facebookIcon";
+import XIcon from "../iconComponent/socialIcons/xIcon";
+import InstagramIcon from "../iconComponent/socialIcons/InstagramIcon";
+import LinkedinIcon from "../iconComponent/socialIcons/LinkedinIcon";
 
 interface FooterProps {
   className?: string;
@@ -40,7 +40,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   const linkHoverVariants: Variants = {
     hover: {
       scale: 1.05,
-      color: "#A60F01",
+      // color: "#A60F01",
       transition: { duration: 0.2, ease: "easeInOut" },
     },
     tap: { scale: 0.95 },
@@ -55,12 +55,6 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
     tap: { scale: 0.9 },
   };
 
-  const logoVariants: Variants = {
-    hover: {
-      scale: 1.1,
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-  };
 
   const footerLinks = [
     {
@@ -93,10 +87,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   ];
 
   const socialIcons = [
-    { Icon: Facebook, href: "#", label: "Facebook" },
-    { Icon: Twitter, href: "#", label: "Twitter" },
-    { Icon: Instagram, href: "#", label: "Instagram" },
-    { Icon: Linkedin, href: "#", label: "LinkedIn" },
+    { Icon: FacebookIcon, href: "#", label: "Facebook" },
+    { Icon: XIcon, href: "#", label: "Twitter" },
+    { Icon: InstagramIcon, href: "#", label: "Instagram" },
+    { Icon: LinkedinIcon, href: "#", label: "LinkedIn" },
   ];
 
   return (
@@ -108,14 +102,13 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
       viewport={{ once: true, amount: 0.2 }}
     >
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="flex flex-col lg:flex-row  items-center justify-between gap-12">
           {/* Company Info Section */}
           <motion.div
-            className="lg:col-span-1 space-y-6 w-full lg:w-[500px]"
+            className="col-span-1 space-y-6 w-full !lg:w-[488px]"
             variants={itemVariants}
           >
             <motion.div
-              variants={logoVariants}
               whileHover="hover"
               className="cursor-pointer"
             >
@@ -123,11 +116,11 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
             </motion.div>
 
             <motion.p
-              className="text-white text-sm leading-relaxed  w-full"
+              className="text-white text-[15px] leading-relaxed  w-full !lg:w-[488px]"
               variants={itemVariants}
             >
               At AtticaHQ, we don't just deal in properties, we create places
-              where life happens.
+              where <br className="hidden lg:block" /> life happens.
             </motion.p>
 
             <motion.div className="space-y-3" variants={itemVariants}>
@@ -148,55 +141,61 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
             </motion.div>
 
             {/* Social Icons */}
-            <motion.div className="flex space-x-4 pt-4 w-full" variants={itemVariants}>
+            <motion.div
+              className="flex space-x-4 pt-4 w-full"
+              variants={itemVariants}
+            >
               {socialIcons.map(({ Icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10  bg-gray_text1/20 rounded-full flex items-center justify-center text-white border border-gray-400"
+                  className="w-10 h-10  bg-[#E7E7E733] rounded-full flex items-center justify-center text-white border border-gray-400"
                   variants={socialIconVariants}
                   whileHover="hover"
                   whileTap="tap"
                 >
-                  <Icon size={18} />
+                  <Icon />
                 </motion.a>
               ))}
             </motion.div>
           </motion.div>
 
           {/* Links Sections */}
-          {footerLinks.map((section, index: number) => (
-            <motion.div
-              key={section.title}
-              className={`space-y-6 ${
-                index <1 &&index !=2 ? "lg:ml-[200px] w-full" : "lg:ml-8 w-full"
-              }`}
-              variants={itemVariants}
-            >
-              <motion.h3
-                className="text-xl font-semibold text-white border-b border-primary_color pb-2"
-                whileHover={{ color: "#fbbf24", transition: { duration: 0.2 } }}
+          <div className="grid grid-cols-2 md:grid-cols-3  lg:grid-cols-3 gap-6 w-full">
+            {footerLinks.map((section, index: number) => (
+              <motion.div
+                key={section.title}
+                className={`space-y-4  ${index < 1 && index != 2 ? "" : ""}`}
+                variants={itemVariants}
               >
-                {section.title}
-              </motion.h3>
-              <ul className="space-y-3">
-                {section.links.map((link) => (
-                  <motion.li key={link.name}>
-                    <motion.a
-                      href={link.href}
-                      className="text-white hover:text-white transition-colors duration-200 block"
-                      variants={linkHoverVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                    >
-                      {link.name}
-                    </motion.a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+                <motion.h3
+                  className="text-lg lg:text-xl font-semibold text-white border-b border-primary_color pb-2"
+                  whileHover={{
+                    color: "#fbbf24",
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  {section.title}
+                </motion.h3>
+                <ul className="space-y-3">
+                  {section.links.map((link) => (
+                    <motion.li key={link.name}>
+                      <motion.a
+                        href={link.href}
+                        className="text-white hover:text-white transition-colors duration-200 block"
+                        variants={linkHoverVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                      >
+                        {link.name}
+                      </motion.a>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Bottom Section */}

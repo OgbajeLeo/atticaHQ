@@ -15,6 +15,7 @@ import ListIcon from "../../components/iconComponent/ListIcon";
 import BedIcon from "../../components/iconComponent/BedIcon";
 import SqrMtr from "../../components/iconComponent/SqrMtr";
 import BathIcon from "../../components/iconComponent/BathIcon";
+import FeaturedPropertyAd from "../../components/FeaturedPropertyAd";
 import { useNavigate } from "react-router-dom";
 
 interface Property {
@@ -267,6 +268,44 @@ const PropertyListingPage: React.FC = () => {
   const startIndex = (currentPage - 1) * propertiesPerPage;
   const endIndex = startIndex + propertiesPerPage;
   const currentProperties = sortedProperties.slice(startIndex, endIndex);
+
+  // Function to render properties with interstitial ad
+  const renderPropertiesWithAd = () => {
+    const properties = currentProperties;
+    const adInsertionPoint = 4; // Insert ad after 4 properties
+
+    if (properties.length <= adInsertionPoint) {
+      // If we have 4 or fewer properties, just render them normally
+      return properties.map((property) => (
+        <PropertyCard key={property.id} property={property} />
+      ));
+    }
+
+    // Split properties into two groups
+    const firstGroup = properties.slice(0, adInsertionPoint);
+    const secondGroup = properties.slice(adInsertionPoint);
+
+    return (
+      <>
+        {/* First group of properties */}
+        {firstGroup.map((property) => (
+          <PropertyCard key={property.id} property={property} />
+        ))}
+
+        {/* Featured Properties Ad - only show on first page and in grid view */}
+        {currentPage === 1 && viewType === "grid" && (
+          <div className="col-span-full -mx-4 sm:-mx-6 lg:-mx-8">
+            <FeaturedPropertyAd showHeader={true} maxProperties={4} />
+          </div>
+        )}
+
+        {/* Second group of properties */}
+        {secondGroup.map((property) => (
+          <PropertyCard key={property.id} property={property} />
+        ))}
+      </>
+    );
+  };
 
   // Reset to first page when filters change
   useEffect(() => {
@@ -674,9 +713,9 @@ const PropertyListingPage: React.FC = () => {
       </div>
 
       {/* Results Section */}
-      <div className="max-w-7xl mx-auto w-full px-2 py-6">
+      <div className=" mx-auto w-full px-2 py-6">
         {/* Results Header */}
-        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+        <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between mb-6">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl font-medium  text-gray_text2 mb-2">
               Properties for Sale in{" "}
@@ -749,20 +788,18 @@ const PropertyListingPage: React.FC = () => {
         </div>
 
         {/* Properties Grid/List */}
-        <motion.div
-          layout
-          className={`gap-6 ${
-            viewType === "grid"
-              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-              : "flex flex-col space-y-6"
-          }`}
-        >
-          <AnimatePresence>
-            {currentProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            layout
+            className={`gap-6 ${
+              viewType === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "flex flex-col space-y-6"
+            }`}
+          >
+            <AnimatePresence>{renderPropertiesWithAd()}</AnimatePresence>
+          </motion.div>
+        </div>
 
         {/* Pagination */}
         {totalPages > 1 && (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import bg from "../../assets/heroBG.jpg";
 import OpenClose from "../../components/iconComponent/OpenClose";
+import { useNavigate } from "react-router-dom";
 
 interface SearchFilters {
   type: "Buy" | "Rent";
@@ -18,6 +19,7 @@ const Hero: React.FC = () => {
     location: "Abuja",
     price: "₦25,500,000",
   });
+  const navigate = useNavigate();
 
   // const tabs = ["Buy", "Rent"] as const;
   const locations = ["Abuja", "Lagos", "Kano", "Port Harcourt", "Ibadan"];
@@ -35,6 +37,9 @@ const Hero: React.FC = () => {
   // };
 
   const handleSearch = () => {
+    navigate(
+      `/rent?tsearch=${searchFilters.lookingFor}&location=${searchFilters.location}&price=${searchFilters.price}`
+    );
     console.log("Searching with filters:", searchFilters);
     // Add your search logic here
   };

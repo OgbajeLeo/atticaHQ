@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useAdminAuth } from "../../contexts/AdminAuthContext";
-import Logo from "../../components/iconComponent/Logo";
+import logo from "../../assets/logo.svg";
 
 const AdminLogin: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -50,8 +50,8 @@ const AdminLogin: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <Logo />
+        <div className="text-center flex justify-center items-center">
+          <img src={logo} alt="logo" className="" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Admin Sign In

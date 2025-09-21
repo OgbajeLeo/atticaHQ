@@ -6,23 +6,23 @@ import StatsCounter from "./Counter";
 const HeroSection: React.FC = () => {
   return (
     <div className="bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 py-12 lg:py-12">
+      <div className="max-w-7xl mx-auto px-4 lg:px-0 py-12 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
           {/* Left Side - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8 lg:pr-8"
+            className="space-y-8"
           >
             {/* Breadcrumb */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline bg-[#EAEAEA1A] rounded-xl px-4 py-2"
+              className="inline border border-gray_text1  mb-4 rounded-xl px-4 py-2"
             >
-              <span className="text-gray_text2 text-sm font-medium tracking-wide ">
+              <span className="rounded-xl text-gray_text2 text-sm font-medium tracking-wide ">
                 About Us
               </span>
             </motion.div>
@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="space-y-4"
+              className="space-y-4 mt-4"
             >
               <h1 className="text-4xl sm:text-5xl lg:text-[60px] font-bold text-gray_text3 leading-[150%]">
                 Secure your family's
@@ -53,10 +53,6 @@ const HeroSection: React.FC = () => {
               smart living solutions to deliver high-end, sustainable
               properties.
             </motion.p>
-
-         
-
-          
           </motion.div>
 
           {/* Right Side - House Image */}
@@ -74,12 +70,10 @@ const HeroSection: React.FC = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-
-            </motion.div>
-              </div>
-              
+          </motion.div>
+        </div>
       </div>
-              <StatsCounter />
+      <StatsCounter />
     </div>
   );
 };

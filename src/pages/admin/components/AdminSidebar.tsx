@@ -119,7 +119,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       <div className="p-4 border-t border-primary_color">
         <button
           onClick={onLogout}
-          className="w-full flex items-center px-3 py-2 text-amber-100 hover:bg-primary_color hover:text-white rounded-lg transition-colors"
+          className="w-full flex items-center px-3 py-2 text-white  hover:text-white rounded-lg transition-colors"
         >
           <LogOut
             className={`w-5 h-5 ${collapsed && !isMobile ? "" : "mr-3"}`}

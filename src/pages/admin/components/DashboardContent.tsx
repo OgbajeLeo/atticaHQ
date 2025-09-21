@@ -12,10 +12,10 @@ const DashboardContent: React.FC = () => {
       title: "Total Properties for Sale",
       value: "8,602",
     },
-    {
-      title: "Total Properties for Rent",
-      value: "3,234",
-    },
+    // {
+    //   title: "Total Properties for Rent",
+    //   value: "3,234",
+    // },
     {
       title: "Total Tour Request",
       value: "16",
@@ -78,11 +78,11 @@ const DashboardContent: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full">
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full">
         {stats.map((stat, index) => (
-          <div key={index} className={`bg-[#FFF4F4] p-6 rounded-lg`}>
+          <div key={index} className={`bg-[#FFF4F4] p-6 rounded-lg w-full h-[135px] flex flex-col  flex-grow`}>
             <h3 className="text-sm font-medium text-gray_text2 mb-5">
               {stat.title}
             </h3>

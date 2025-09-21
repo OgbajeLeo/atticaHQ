@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Check, AlertCircle } from "lucide-react";
 import handshake from "../../assets/contactHandshake.webp";
-import MessageIcon from "../../components/iconComponent/MessageIcon";
 import PhoneIcon from "../../components/iconComponent/PhoneIcon";
 import ChatIcon from "../../components/iconComponent/ChatIcon";
+import MsgIcon from "../../components/iconComponent/MsgIcon";
 interface FormData {
   fullName: string;
   email: string;
@@ -86,7 +86,7 @@ console.log(formData, "formData")
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-block bg-gray_text1 text-gray_text2 text-[15px] px-4 py-2 rounded-full mb-2">
+          <div className="inline-block border border-gray_text1 text-gray_text2 text-[15px] px-4 py-2 rounded-xl mb-2">
             Contact Us
           </div>
           <h1 className="text-3xl md:text-[37px] font-bold text-gray_text3 mb-2">
@@ -272,14 +272,14 @@ console.log(formData, "formData")
                 By contacting us, you accept our{" "}
                 <a
                   href="#"
-                  className="text-primary_color font-medium underline underline-offset-2"
+                  className="text-primary_color font-bold underline underline-offset-2"
                 >
                   Terms & Conditions
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="text-primary_color font-medium underline underline-offset-2"
+                  className="text-primary_color font-bold underline underline-offset-2"
                 >
                   Privacy Policy
                 </a>
@@ -301,10 +301,10 @@ console.log(formData, "formData")
             transition={{ duration: 0.2 }}
             className=" bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md text-left transition-shadow duration-200"
           >
-            <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
-              <MessageIcon isActive={true} />
+            <div className="w-12 h-12 bg-red-50 border-2 border-accent text-accent rounded-xl flex items-center justify-center  mb-6">
+              <MsgIcon />
             </div>
-            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
+            <h3 className="text-xl lg:text-[26px] font-bold text-black mb-2">
               Send Us a Mail
             </h3>
             <p className="text-gray_text2 text-base lg:text-lg mb-4 leading-relaxed">
@@ -327,7 +327,7 @@ console.log(formData, "formData")
             <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
               <PhoneIcon />
             </div>
-            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
+            <h3 className="text-xl lg:text-[26px] font-bold text-black mb-2">
               Call Us
             </h3>
             <p className="text-gray_text2 text-base lg:text-lg mb-4 leading-relaxed">
@@ -350,7 +350,7 @@ console.log(formData, "formData")
             <div className="w-12 h-12 bg-red-50 border-2 border-accent rounded-xl flex items-center justify-center  mb-6">
               <ChatIcon />
             </div>
-            <h3 className="text-xl lg:text-[26px] font-bold text-gray_text3 mb-2">
+            <h3 className="text-xl lg:text-[26px] font-bold text-black mb-2">
               Live Chat
             </h3>
             <p className="text-gray_text2 text-base lg:text-lg mb-4 leading-relaxed">

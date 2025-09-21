@@ -5,6 +5,7 @@ import {
   getFieldError,
   type ValidationError,
 } from "../../../../utils/validation";
+import { Eye } from "lucide-react";
 
 interface OverviewStepProps {
   formData: PropertyFormData;
@@ -358,14 +359,17 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
                   <p className="text-sm font-medium text-gray-900">
                     Image {index + 1}
                   </p>
-                  <p className="text-xs text-gray-500">Base64 Image</p>
+                  {/* <p className="text-xs text-gray-500">Base64 Image</p> */}
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => openPreview(base64, index)}
-                    className="text-sm text-primary_color hover:underline"
+                    className="text-sm text-primary_color flex items-center gap-2 hover:underline"
                   >
                     Preview
+                    <span>
+                      <Eye size={16} />
+                    </span>
                   </button>
                   <button
                     onClick={() => removeFile(index)}
