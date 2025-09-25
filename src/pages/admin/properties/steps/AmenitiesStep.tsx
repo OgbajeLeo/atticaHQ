@@ -172,8 +172,9 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
       {/* Action Buttons */}
       <div className="flex justify-center pt-6">
         <button
+          disabled={loading}
           onClick={handleNext}
-          className="w-full max-w-md bg-primary_color text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors font-medium"
+          className={`w-full max-w-md ${loading ? "opacity-50 cursor-not-allowed" : ""} bg-primary_color text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors font-medium`}
         >
           Continue
         </button>

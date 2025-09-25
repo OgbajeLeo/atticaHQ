@@ -1,47 +1,70 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, MoreVertical } from "lucide-react";
-import { AuthApi } from "../../../utils";
+import { useNavigate } from "react-router-dom";
+import { AuthApi, formatDateToDisplay } from "../../../utils";
+import type { Message } from "../../../types/message";
+import StatsSkeleton from "./StatsSkeleton";
+import PropertiesTableSkeleton from "./PropertiesTableSkeleton";
+import TourRequestsSkeleton from "./TourRequestsSkeleton";
 interface Stat {
-  title: string
-  value: string
+  title: string;
+  value: string;
 }
 const DashboardContent: React.FC = () => {
-  const [stats, setStats] = useState<Stat[]>([])
+  const navigate = useNavigate();
+  const [stats, setStats] = useState<Stat[]>([]);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const [propertiesLoading, setPropertiesLoading] = useState(true);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const getState = async () => {
     try {
-      const res = await AuthApi.GetOverview() as any
-      console.log(res.stats.shift())
-      setStats(res.stats)
+      setStatsLoading(true);
+      const res = (await AuthApi.GetOverview()) as any;
+      console.log(res.stats.shift());
+      setStats(res.stats);
     } catch (error) {
-      console.log(error)
+      console.log(error);
+    } finally {
+      setStatsLoading(false);
     }
-  }
-  
+  };
+
   useEffect(() => {
-    getState()
-  }, [])
+    getState();
+    getAllMessages();
+    getProperties();
+  }, []);
 
+  const getAllMessages = async () => {
+    try {
+      setMessagesLoading(true);
+      const res = (await AuthApi.AllMessages()) as any;
+      setMessages(res.messages);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setMessagesLoading(false);
+    }
+  };
+  const getProperties = async () => {
+    try {
+      setPropertiesLoading(true);
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPropertiesLoading(false);
+    }
+  };
 
-  // Mock data for statistics
-  // const stats = [
-  //   {
-  //     title: "Total Listed Properties",
-  //     value: "12,456",
-  //   },
-  //   {
-  //     title: "Total Properties for Sale",
-  //     value: "8,602",
-  //   },
-  //   // {
-  //   //   title: "Total Properties for Rent",
-  //   //   value: "3,234",
-  //   // },
-  //   {
-  //     title: "Total Tour Request",
-  //     value: "16",
-  //   },
-  // ];
+  useEffect(() => {}, []);
+
+  const handleMessageClick = (messageId: number) => {
+    navigate(`/admin/messages/${messageId}`);
+  };
 
   // Mock data for newly listed properties
   const newlyListedProperties = [
@@ -80,36 +103,27 @@ const DashboardContent: React.FC = () => {
     },
   ];
 
-  // Mock data for tour requests
-  const tourRequests = [
-    {
-      id: 1,
-      clientName: "Chizoba Odita",
-      date: "20 July, 2025",
-      email: "strongestavenger@example.co...",
-      message: "hello I have an issue with regist...",
-    },
-    {
-      id: 2,
-      clientName: "John Doe",
-      date: "19 July, 2025",
-      email: "johndoe@example.com",
-      message: "I would like to schedule a tour...",
-    },
-  ];
-
   return (
     <div className="space-y-8 w-full">
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 w-full">
-        {stats.map((stat, index) => (
-          <div key={index} className={`bg-[#FFF4F4] p-6 rounded-lg w-full h-[135px] flex flex-col  flex-grow`}>
-            <h3 className="text-sm font-medium text-gray_text2 mb-5">
-              {stat.title}
-            </h3>
-            <p className="text-[31px] font-bold text-gray-900">{stat.value}</p>
-          </div>
-        ))}
+        {statsLoading ? (
+          <StatsSkeleton count={4} />
+        ) : (
+          stats.map((stat, index) => (
+            <div
+              key={index}
+              className={`bg-[#FFF4F4] p-6 rounded-lg w-full h-[135px] flex flex-col  flex-grow`}
+            >
+              <h3 className="text-sm font-medium text-gray_text2 mb-5">
+                {stat.title}
+              </h3>
+              <p className="text-[31px] font-bold text-gray-900">
+                {stat.value}
+              </p>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Newly Listed Properties */}
@@ -146,58 +160,62 @@ const DashboardContent: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {newlyListedProperties.map((property) => (
-                <tr key={property.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-12 w-12">
-                        <img
-                          className="h-12 w-12 rounded-lg object-cover"
-                          src={property.image}
-                          alt={property.name}
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {property.name}
+              {propertiesLoading ? (
+                <PropertiesTableSkeleton count={3} />
+              ) : (
+                newlyListedProperties.map((property) => (
+                  <tr key={property.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-12 w-12">
+                          <img
+                            className="h-12 w-12 rounded-lg object-cover"
+                            src={property.image}
+                            alt={property.name}
+                          />
                         </div>
-                        <div className="text-sm text-gray-500 flex items-center">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          {property.location}
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {property.name}
+                          </div>
+                          <div className="text-sm text-gray-500 flex items-center">
+                            <MapPin className="w-3 h-3 mr-1" />
+                            {property.location}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {property.listedDate}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {property.category}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {property.price}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {property.propertyType}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        property.status === "Available"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {property.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-gray-400 hover:text-gray_text2">
-                      <MoreVertical className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {property.listedDate}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {property.category}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {property.price}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {property.propertyType}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          property.status === "Available"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {property.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button className="text-gray-400 hover:text-gray_text2">
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -231,27 +249,41 @@ const DashboardContent: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {tourRequests.map((request) => (
-                <tr key={request.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {request.clientName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {request.date}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {request.email}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {request.message}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-gray-400 hover:text-gray_text2">
-                      <MoreVertical className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {messagesLoading ? (
+                <TourRequestsSkeleton count={4} />
+              ) : (
+                messages.slice(0, 4).map((request) => (
+                  <tr
+                    key={request.id}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+                    onClick={() => handleMessageClick(request.id)}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {request.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {formatDateToDisplay(request.created_at)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {request.email}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900 line-clamp-3">
+                      {request.message}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        className="text-gray-400 hover:text-gray_text2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Handle more actions here if needed
+                        }}
+                      >
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

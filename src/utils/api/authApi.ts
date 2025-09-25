@@ -202,14 +202,17 @@ export const AddShopItem = async (data: object) => {
     throw error;
   }
 };
-export const GetShopItemByID = async (id: string) => {
+
+export const GetPropertyByID = async (id: string) => {
   try {
-    const response = await axios$.get(`/shops/${id}`);
+    const response = await axios$.get(`/properties/${id}`);
     return response;
   } catch (error) {
     throw error;
   }
 };
+
+
 export const GetMessageByID = async (id: string) => {
   try {
     const response = await axios$.get(`/admin/messages/${id}`);
