@@ -5,6 +5,7 @@ import {
   getFieldError,
   type ValidationError,
 } from "../../../../utils/validation";
+import { AuthApi } from "../../../../utils";
 
 interface AmenitiesStepProps {
   formData: PropertyFormData;
@@ -14,70 +15,25 @@ interface AmenitiesStepProps {
   isFirstStep: boolean;
   isLastStep: boolean;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
-const defaultAmenities = [
-  "A/C & Heating",
-  "Garages",
-  "Swimming Pool",
-  "Parking",
-  "Lake View",
-  "Garden",
-  "Disabled Access",
-  "Pet Friendly",
-  "Ceiling Height",
-  "Outdoor Shower",
-  "Refrigerator",
-  "Fireplace",
-  "Wifi",
-  "TV Cable",
-  "Barbeque",
-  "Laundry",
-  "Dryer",
-  "Lawn",
-  "Elevator",
-  "Brand New & Tastefully Finished",
-  "Modern Contemporary Architecture",
-  "Two Floor With Spacious Layout",
-  "All Room En-suite",
-  "Ante Room & Dining Area",
-  "Family Lounge (Upstairs & Downstairs)",
-  "Guest Toilet",
-  "Boy's Quarters(BQ)",
-  "Fully Fitted Kitchen",
-  "POP Ceiling",
-  "Italian Bathroom Fittings",
-  "Water Heaters",
-  "Contemporary Lighting",
-  "Fire Alarm Systems",
-  "Smart Home Automation",
-  "CCTV Surveillance",
-  "Voice Command Integration",
-  "Fully Equipped Gym",
-  "Rooftop Lounge",
-  "Table Tennis Court",
-  "Gated Estate",
-  "Access Control",
-  "Borehole & Treatment",
-  "Stamped Concrete Floors",
-  "Ample Car Parking (5-6 Cars)",
-  "Built-in Wardrobes",
-  "High Ceilings",
-  "Jacuzzi & Bathtub",
-  "Bluetooth Audio System",
-  "Top-Quality Tiles",
-  "TV Console & Stayway Lights",
-  "Motion Sensor Lighting",
-  "Intercom System",
-  "Automated Security",
-  "Private Cinema Room",
-  "Children's Playground",
-  "Green Area / Turf",
-  "24/7 Security",
-  "Security House",
-  "24 Hours Electricity",
-  "Serene Neighborhood",
-];
+// Skeleton loader component for amenities
+const AmenitiesSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {Array.from({ length: 8 }).map((_, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 animate-pulse"
+        >
+          <div className="w-4 h-4 bg-gray-300 rounded"></div>
+          <div className="h-4 bg-gray-300 rounded flex-1 max-w-[120px]"></div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
   formData,
@@ -88,6 +44,24 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
   const [newAmenity, setNewAmenity] = useState("");
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [amenities, setAmenities] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const getAmenities = async () => {
+    setLoading(true);
+    try {
+      const res = (await AuthApi.getAmenities()) as any;
+      setAmenities(res);
+    } catch (error) {
+      console.log(error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAmenities();
+  }, []);
 
   // Validate form data whenever it changes
   useEffect(() => {
@@ -143,21 +117,27 @@ const AmenitiesStep: React.FC<AmenitiesStepProps> = ({
       </div> */}
 
       {/* Amenities Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
-        {defaultAmenities.map((amenity) => (
-          <label
-            key={amenity}
-            className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors"
-          >
-            <input
-              type="checkbox"
-              checked={formData.amenities.includes(amenity)}
-              onChange={() => toggleAmenity(amenity)}
-              className="w-4 h-4 text-primary_color accent-primary_color border-gray-300 rounded focus:ring-primary_color"
-            />
-            <span className="text-sm text-gray_text3">{amenity}</span>
-          </label>
-        ))}
+      <div className="max-h-96 overflow-y-auto">
+        {loading ? (
+          <AmenitiesSkeleton />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {amenities.map((amenity) => (
+              <label
+                key={amenity}
+                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors"
+              >
+                <input
+                  type="checkbox"
+                  checked={formData.amenities.includes(amenity)}
+                  onChange={() => toggleAmenity(amenity)}
+                  className="w-4 h-4 text-primary_color accent-primary_color border-gray-300 rounded focus:ring-primary_color"
+                />
+                <span className="text-sm text-gray_text3">{amenity}</span>
+              </label>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Add New Feature */}

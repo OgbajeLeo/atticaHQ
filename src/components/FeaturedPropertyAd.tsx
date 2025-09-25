@@ -204,7 +204,7 @@ const FeaturedPropertyAd: React.FC<FeaturedPropertyAdProps> = ({
                       property.forSale
                         ? "bg-[#FFF4F4] text-accent font-bold border border-accent"
                         : "bg-[#FFF4F4] text-accent font-bold border border-accent"
-                        // : "bg-[#20B2AA] text-white"
+                      // : "bg-[#20B2AA] text-white"
                     }`}
                   >
                     {property.forSale ? "For Sale" : "For Rent"}

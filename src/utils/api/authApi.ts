@@ -26,6 +26,14 @@ export const Register = async (data: object) => {
   }
 };
 
+export const CreateProperties = async (data:object) => {
+  try {
+    const response = await axios$.post(`/properties`,data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 export const AllProperties = async () => {
   try {
     const response = await axios$.get(`/properties`);
@@ -35,9 +43,25 @@ export const AllProperties = async () => {
   }
 };
 
-export const GetCourseByID = async (id: string) => {
+export const getAmenities = async () => {
   try {
-    const response = await axios$.get(`/courses/${id}`);
+    const response = await axios$.get(`/admin/amenities`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getOverview = async () => {
+  try {
+    const response = await axios$.get(`/admin/stats`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getPropertyType = async () => {
+  try {
+    const response = await axios$.get(`/admin/property-types`);
     return response;
   } catch (error) {
     throw error;
@@ -98,7 +122,7 @@ export const EditDiscount= async (data: object,id:string) => {
 };
 export const AllMessages = async () => {
   try {
-    const response = await axios$.get(`/messages`);
+    const response = await axios$.get(`/admin/messages`);
     return response;
   } catch (error) {
     throw error;
@@ -122,7 +146,7 @@ export const AllShopItems = async () => {
 };
 export const GetOverview = async () => {
   try {
-    const response = await axios$.get(`/dashboard`);
+    const response = await axios$.get(`/admin/stats`);
     return response;
   } catch (error) {
     throw error;
@@ -130,7 +154,7 @@ export const GetOverview = async () => {
 };
 export const sendMessage = async (data: object) => {
   try {
-    const response = await axios$.post(`/messages`, data);
+    const response = await axios$.post(`/admin/messages`, data);
     return response;
   } catch (error) {
     throw error;
@@ -186,18 +210,26 @@ export const GetShopItemByID = async (id: string) => {
     throw error;
   }
 };
-export const GetDiscountByID = async (id: string) => {
+export const GetMessageByID = async (id: string) => {
   try {
-    const response = await axios$.get(`/discounts/${id}`);
+    const response = await axios$.get(`/admin/messages/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const MarkAsRead = async (id: string,data:object) => {
+  try {
+    const response = await axios$.patch(`/admin/messages/${id}`,data);
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export const DeleteShopItem = async (id: string) => {
+export const DeleteMessage = async (id: string) => {
   try {
-    const response = await axios$.delete(`/shops/${id}`, {});
+    const response = await axios$.delete(`/admin/messages/${id}`, {});
     return response;
   } catch (error) {
     throw error;

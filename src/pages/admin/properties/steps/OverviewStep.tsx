@@ -6,6 +6,7 @@ import {
   type ValidationError,
 } from "../../../../utils/validation";
 import { Eye } from "lucide-react";
+import { AuthApi } from "../../../../utils";
 
 interface OverviewStepProps {
   formData: PropertyFormData;
@@ -15,6 +16,7 @@ interface OverviewStepProps {
   isFirstStep: boolean;
   isLastStep: boolean;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
 const OverviewStep: React.FC<OverviewStepProps> = ({
@@ -31,6 +33,8 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
     index: number;
   }>({ isOpen: false, base64: null, index: -1 });
   const [fileError, setFileError] = useState<string>("");
+  const [propertyTypes, setPropertyTypes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Validate form data whenever it changes
   useEffect(() => {
@@ -117,14 +121,22 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
     setPreviewModal({ isOpen: false, base64: null, index: -1 });
   };
 
-  const propertyTypes = [
-    "Flat",
-    "Apartment",
-    "Villa",
-    "House",
-    "Office",
-    "Land",
-  ];
+  const getPropertyTypes = async () => {
+    setLoading(true);
+    try {
+      const res = (await AuthApi.getPropertyType()) as any;
+      setPropertyTypes(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPropertyTypes();
+  }, []);
+
   const categories = ["Buy", "Rent"];
 
   return (
@@ -163,11 +175,15 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
               "propertyType"
             )}`}
           >
-            {propertyTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
+            {loading ? (
+              <option value="">Loading...</option>
+            ) : (
+              propertyTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))
+            )}
           </select>
           {touched.propertyType && getFieldError(errors, "Property Type") && (
             <p className="mt-1 text-sm text-red-600">
@@ -209,9 +225,11 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
           </label>
           <div className="relative">
             <input
-              type="text"
+              type="number"
               value={formData.annualPrice}
-              onChange={(e) => handleFieldChange("annualPrice", e.target.value)}
+              onChange={(e) =>
+                handleFieldChange("annualPrice", Number(e.target.value))
+              }
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent pr-10 ${getFieldErrorClass(
                 "annualPrice"
               )}`}
@@ -244,10 +262,10 @@ const OverviewStep: React.FC<OverviewStepProps> = ({
           </label>
           <div className="relative">
             <input
-              type="text"
+              type="number"
               value={formData.monthlyPrice}
               onChange={(e) =>
-                handleFieldChange("monthlyPrice", e.target.value)
+                handleFieldChange("monthlyPrice", Number(e.target.value))
               }
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent pr-10 ${getFieldErrorClass(
                 "monthlyPrice"

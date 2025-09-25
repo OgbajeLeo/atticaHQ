@@ -14,6 +14,7 @@ interface ListingDetailsStepProps {
   isFirstStep: boolean;
   isLastStep: boolean;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
 const ListingDetailsStep: React.FC<ListingDetailsStepProps> = ({
@@ -207,9 +208,11 @@ const ListingDetailsStep: React.FC<ListingDetailsStepProps> = ({
             Year Built *
           </label>
           <input
-            type="text"
+            type="number"
             value={formData.yearBuilt}
-            onChange={(e) => handleFieldChange("yearBuilt", e.target.value)}
+            onChange={(e) =>
+              handleFieldChange("yearBuilt", Number(e.target.value))
+            }
             className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${getFieldErrorClass(
               "yearBuilt"
             )}`}

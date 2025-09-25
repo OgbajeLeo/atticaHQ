@@ -5,6 +5,7 @@ import handshake from "../../assets/contactHandshake.webp";
 import PhoneIcon from "../../components/iconComponent/PhoneIcon";
 import ChatIcon from "../../components/iconComponent/ChatIcon";
 import MsgIcon from "../../components/iconComponent/MsgIcon";
+import { AuthApi } from "../../utils";
 interface FormData {
   fullName: string;
   email: string;
@@ -56,16 +57,22 @@ const ContactUI: React.FC = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-console.log(formData, "formData")
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = (await AuthApi.sendMessage({
+        name: formData.fullName,
+        email: formData.email,
+        message: formData.message,
+      })) as any;
+      
       setIsSubmitted(true);
       setFormData({ fullName: "", email: "", message: "" });
-
-      // Reset success message after 3 seconds
-      setTimeout(() => setIsSubmitted(false), 3000);
-    }, 1500);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+    finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: keyof FormData, value: string) => {

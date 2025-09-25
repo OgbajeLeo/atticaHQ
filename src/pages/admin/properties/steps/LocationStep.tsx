@@ -15,6 +15,7 @@ interface LocationStepProps {
   isFirstStep: boolean;
   isLastStep: boolean;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
 const suggestedLandmarks = [
@@ -43,6 +44,7 @@ const LocationStep: React.FC<LocationStepProps> = ({
   updateFormData,
   //   onPrev,
   onSubmit,
+  isSubmitting = false,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -324,9 +326,13 @@ const LocationStep: React.FC<LocationStepProps> = ({
       <div className="flex justify-center pt-6">
         <button
           onClick={handleSubmit}
-          className="w-full max-w-md bg-primary_color text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors font-medium"
+          disabled={isSubmitting}
+          className="w-full max-w-md bg-primary_color text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          Save Property
+          {isSubmitting && (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          )}
+          {isSubmitting ? "Creating..." : "Save Property"}
         </button>
       </div>
     </div>

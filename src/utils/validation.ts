@@ -130,9 +130,17 @@ export const validateOverviewStep = (formData: any): ValidationResult => {
   // Price validation
   const annualPriceError = validationRules.required(formData.annualPrice, 'Annual Price');
   if (annualPriceError) errors.push(annualPriceError);
+  else {
+    const annualPricePositiveError = validationRules.positiveNumber(formData.annualPrice.toString(), 'Annual Price');
+    if (annualPricePositiveError) errors.push(annualPricePositiveError);
+  }
 
   const monthlyPriceError = validationRules.required(formData.monthlyPrice, 'Monthly Price');
   if (monthlyPriceError) errors.push(monthlyPriceError);
+  else {
+    const monthlyPricePositiveError = validationRules.positiveNumber(formData.monthlyPrice.toString(), 'Monthly Price');
+    if (monthlyPricePositiveError) errors.push(monthlyPricePositiveError);
+  }
 
   // Description validation
   const descriptionError = validationRules.required(formData.description, 'Description');
@@ -206,7 +214,7 @@ export const validateListingDetailsStep = (formData: any): ValidationResult => {
   const yearError = validationRules.required(formData.yearBuilt, 'Year Built');
   if (yearError) errors.push(yearError);
   else {
-    const yearValidError = validationRules.year(formData.yearBuilt, 'Year Built');
+    const yearValidError = validationRules.year(formData.yearBuilt.toString(), 'Year Built');
     if (yearValidError) errors.push(yearValidError);
   }
 

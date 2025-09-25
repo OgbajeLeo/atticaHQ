@@ -9,19 +9,20 @@ import {
   validateAmenitiesStep,
   validateLocationStep,
 } from "../../../utils/validation";
+import { AuthApi } from "../../../utils";
 
 export interface PropertyFormData {
   propertyTitle: string;
   propertyType: string;
   category: string;
-  annualPrice: string;
-  monthlyPrice: string;
+  annualPrice: number;
+  monthlyPrice: number;
   description: string;
   photos: string[];
   sizeInFt: string;
   numberOfBathrooms: string;
   numberOfGarages: string;
-  yearBuilt: string;
+  yearBuilt: number;
   floodWarning: string;
   negotiable: string;
   numberOfBedrooms: string;
@@ -46,18 +47,19 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
   onClose,
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<PropertyFormData>({
     propertyTitle: "3 Bedroom Furnished Flat",
     propertyType: "Flat",
     category: "Buy",
-    annualPrice: "₦160,000,000",
-    monthlyPrice: "₦5,000,000",
+    annualPrice: 160000000,
+    monthlyPrice: 5000000,
     description: "",
     photos: [],
     sizeInFt: "3210",
     numberOfBathrooms: "3",
     numberOfGarages: "2",
-    yearBuilt: "2001",
+    yearBuilt: 2001,
     floodWarning: "Yes",
     negotiable: "Yes",
     numberOfBedrooms: "4",
@@ -112,7 +114,7 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Final validation before submission
     const finalValidation = validateLocationStep(formData);
 
@@ -121,13 +123,16 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
       return;
     }
 
-    console.log(formData, "=== END OF FORM DATA ===");
-
-    // Here you would typically send the data to your API endpoint
-    alert(
-      "Property data has been logged to console. Check the browser console for details."
-    );
-    onClose();
+    setIsSubmitting(true);
+    try {
+      const res = await AuthApi.CreateProperties(formData);
+      console.log(res);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getBreadcrumb = () => {
@@ -217,6 +222,7 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
             isFirstStep={currentStep === 1}
             isLastStep={currentStep === steps.length}
             onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
           />
         </div>
       </div>

@@ -1,5 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthApi } from "../../../utils";
+import MessageItem from "./MessageItem";
+import MessageSkeleton from "./MessageSkeleton";
+import type { Message } from "../../../types/message";
 
 const MessagesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -8,200 +12,35 @@ const MessagesPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const itemsPerPage = 10;
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const getAllMessages = async () => {
+    try {
+      setLoading(true);
+      const res = (await AuthApi.AllMessages()) as any;
+      setMessages(res.messages);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getAllMessages();
+  }, []);
 
   // Sample messages data with more variety for testing
-  const allMessages = [
-    {
-      id: 1,
-      clientName: "Chizoba Odita",
-      date: "20 July, 2025",
-      email: "strongestavenger@example.com",
-      message:
-        "hello I have an issue with registering for the property viewing. Can you please help me with this?",
-      status: "Unread",
-    },
-    {
-      id: 2,
-      clientName: "Sarah Johnson",
-      date: "19 July, 2025",
-      email: "sarah.j@example.com",
-      message:
-        "I'm interested in scheduling a property tour for next week. What are your available times?",
-      status: "Read",
-    },
-    {
-      id: 3,
-      clientName: "Michael Chen",
-      date: "18 July, 2025",
-      email: "m.chen@example.com",
-      message:
-        "Could you please send me more information about the property amenities and nearby facilities?",
-      status: "Unread",
-    },
-    {
-      id: 4,
-      clientName: "Emily Rodriguez",
-      date: "17 July, 2025",
-      email: "emily.r@example.com",
-      message:
-        "I have questions about the lease terms and deposit requirements. Can we discuss this?",
-      status: "Read",
-    },
-    {
-      id: 5,
-      clientName: "David Thompson",
-      date: "16 July, 2025",
-      email: "david.t@example.com",
-      message:
-        "Is the property pet-friendly? I have two small dogs and need to know the pet policy.",
-      status: "Unread",
-    },
-    {
-      id: 6,
-      clientName: "Lisa Wang",
-      date: "15 July, 2025",
-      email: "lisa.w@example.com",
-      message:
-        "I'm looking for a 2-bedroom apartment. Do you have any available units in my budget range?",
-      status: "Read",
-    },
-    {
-      id: 7,
-      clientName: "James Wilson",
-      date: "14 July, 2025",
-      email: "james.w@example.com",
-      message:
-        "What are the parking options available for residents? Is there covered parking?",
-      status: "Unread",
-    },
-    {
-      id: 8,
-      clientName: "Maria Garcia",
-      date: "13 July, 2025",
-      email: "maria.g@example.com",
-      message:
-        "I'm interested in the property but need to know about the application process and timeline.",
-      status: "Read",
-    },
-    {
-      id: 9,
-      clientName: "Robert Brown",
-      date: "12 July, 2025",
-      email: "robert.b@example.com",
-      message:
-        "Can you provide information about the neighborhood safety and local schools?",
-      status: "Unread",
-    },
-    {
-      id: 10,
-      clientName: "Jennifer Lee",
-      date: "11 July, 2025",
-      email: "jennifer.l@example.com",
-      message:
-        "I'd like to know about the maintenance policies and how to report issues.",
-      status: "Read",
-    },
-    {
-      id: 11,
-      clientName: "Christopher Davis",
-      date: "10 July, 2025",
-      email: "chris.d@example.com",
-      message:
-        "What utilities are included in the rent? I need to budget for additional expenses.",
-      status: "Unread",
-    },
-    {
-      id: 12,
-      clientName: "Amanda Taylor",
-      date: "9 July, 2025",
-      email: "amanda.t@example.com",
-      message:
-        "Is there a gym or fitness center in the building? What are the hours?",
-      status: "Read",
-    },
-    {
-      id: 13,
-      clientName: "Kevin Martinez",
-      date: "8 July, 2025",
-      email: "kevin.m@example.com",
-      message:
-        "I'm moving from out of state. Can you recommend any local moving companies?",
-      status: "Unread",
-    },
-    {
-      id: 14,
-      clientName: "Rachel Anderson",
-      date: "7 July, 2025",
-      email: "rachel.a@example.com",
-      message:
-        "What is the policy on subletting? I may need to travel for work occasionally.",
-      status: "Read",
-    },
-    {
-      id: 15,
-      clientName: "Daniel White",
-      date: "6 July, 2025",
-      email: "daniel.w@example.com",
-      message:
-        "Are there any upcoming renovations or construction that might affect residents?",
-      status: "Unread",
-    },
-    {
-      id: 16,
-      clientName: "Nicole Harris",
-      date: "5 July, 2025",
-      email: "nicole.h@example.com",
-      message:
-        "I work from home. Is the internet speed reliable and what providers are available?",
-      status: "Read",
-    },
-    {
-      id: 17,
-      clientName: "Matthew Clark",
-      date: "4 July, 2025",
-      email: "matthew.c@example.com",
-      message:
-        "What are the quiet hours and noise policies? I need a peaceful environment.",
-      status: "Unread",
-    },
-    {
-      id: 18,
-      clientName: "Stephanie Lewis",
-      date: "3 July, 2025",
-      email: "stephanie.l@example.com",
-      message:
-        "Is there a package delivery system? I receive many online orders.",
-      status: "Read",
-    },
-    {
-      id: 19,
-      clientName: "Andrew Walker",
-      date: "2 July, 2025",
-      email: "andrew.w@example.com",
-      message:
-        "What are the guest policies? I have family visiting from time to time.",
-      status: "Unread",
-    },
-    {
-      id: 20,
-      clientName: "Michelle Hall",
-      date: "1 July, 2025",
-      email: "michelle.h@example.com",
-      message:
-        "Can you tell me about the building's security features and access control?",
-      status: "Read",
-    },
-  ];
 
   // Filter and search logic
   const filteredMessages = useMemo(() => {
-    let filtered = allMessages;
+    let filtered = messages;
 
     // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(
         (message) =>
-          message.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           message.message.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -209,11 +48,15 @@ const MessagesPage: React.FC = () => {
 
     // Apply status filter
     if (statusFilter !== "All") {
-      filtered = filtered.filter((message) => message.status === statusFilter);
+      filtered = filtered.filter((message) => {
+        if (statusFilter === "Unread") return !message.isRead;
+        if (statusFilter === "Read") return message.isRead;
+        return true;
+      });
     }
 
     return filtered;
-  }, [searchTerm, statusFilter]);
+  }, [searchTerm, statusFilter, messages]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredMessages.length / itemsPerPage);
@@ -262,7 +105,7 @@ const MessagesPage: React.FC = () => {
               className=" text-gray_text3 px-4 py-2 rounded-xl border border-gray-300 transition-colors flex items-center gap-2"
               onClick={() => setShowFilterDropdown(!showFilterDropdown)}
             >
-              Filter 
+              Filter
               <svg
                 width="24"
                 height="24"
@@ -350,8 +193,33 @@ const MessagesPage: React.FC = () => {
       </div>
 
       {/* Messages Table */}
-      <div className=" rounded-lg overflow-hidden">
-        {filteredMessages.length === 0 ? (
+      <div className="rounded-lg overflow-hidden">
+        {loading ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead className="!text-gray_text3 bg-gray-50 !font-semibold">
+                <tr>
+                  <th className="px-6 py-3 text-left tracking-wider">
+                    Client's Name
+                  </th>
+                  <th className="px-6 py-3 text-left tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left tracking-wider">
+                    Email Address
+                  </th>
+                  <th className="px-6 py-3 text-left tracking-wider">
+                    Message
+                  </th>
+                  <th className="px-6 py-3 text-left tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="!text-gray_text3 divide-y divide-gray-100">
+                <MessageSkeleton count={itemsPerPage} />
+              </tbody>
+            </table>
+          </div>
+        ) : filteredMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-gray_text3">
             <svg
               className="w-16 h-16 text-gray-400 mb-4"
@@ -395,39 +263,11 @@ const MessagesPage: React.FC = () => {
               </thead>
               <tbody className="!text-gray_text3 divide-y divide-gray-100">
                 {currentMessages.map((message) => (
-                  <tr
+                  <MessageItem
                     key={message.id}
-                    className=" cursor-pointer transition-colors"
-                    onClick={() => handleMessageClick(message.id)}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium ">
-                        {message.clientName}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm ">{message.date}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm ">{message.email}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm  max-w-xs truncate">
-                        {message.message}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button className="text-gray-400 hover:text-white">
-                        <svg
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
+                    message={message}
+                    onClick={handleMessageClick}
+                  />
                 ))}
               </tbody>
             </table>

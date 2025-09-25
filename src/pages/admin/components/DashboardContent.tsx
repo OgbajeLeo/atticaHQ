@@ -1,26 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MapPin, MoreVertical } from "lucide-react";
-
+import { AuthApi } from "../../../utils";
+interface Stat {
+  title: string
+  value: string
+}
 const DashboardContent: React.FC = () => {
+  const [stats, setStats] = useState<Stat[]>([])
+
+  const getState = async () => {
+    try {
+      const res = await AuthApi.GetOverview() as any
+      console.log(res.stats.shift())
+      setStats(res.stats)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+  useEffect(() => {
+    getState()
+  }, [])
+
+
   // Mock data for statistics
-  const stats = [
-    {
-      title: "Total Listed Properties",
-      value: "12,456",
-    },
-    {
-      title: "Total Properties for Sale",
-      value: "8,602",
-    },
-    // {
-    //   title: "Total Properties for Rent",
-    //   value: "3,234",
-    // },
-    {
-      title: "Total Tour Request",
-      value: "16",
-    },
-  ];
+  // const stats = [
+  //   {
+  //     title: "Total Listed Properties",
+  //     value: "12,456",
+  //   },
+  //   {
+  //     title: "Total Properties for Sale",
+  //     value: "8,602",
+  //   },
+  //   // {
+  //   //   title: "Total Properties for Rent",
+  //   //   value: "3,234",
+  //   // },
+  //   {
+  //     title: "Total Tour Request",
+  //     value: "16",
+  //   },
+  // ];
 
   // Mock data for newly listed properties
   const newlyListedProperties = [
@@ -80,7 +101,7 @@ const DashboardContent: React.FC = () => {
   return (
     <div className="space-y-8 w-full">
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 w-full">
         {stats.map((stat, index) => (
           <div key={index} className={`bg-[#FFF4F4] p-6 rounded-lg w-full h-[135px] flex flex-col  flex-grow`}>
             <h3 className="text-sm font-medium text-gray_text2 mb-5">

@@ -71,7 +71,8 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <motion.button
+            <motion.button 
+              onClick={() => window.open("https://wa.me/+2347043138224", "_blank")}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -96,15 +97,18 @@ const Navbar: React.FC = () => {
                   className="w-10 h-10 bg-primary_color text-white rounded-full flex items-center justify-center transition-colors duration-200"
                 >
                   <span className="text-sm font-semibold">
-                    <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
-                   
+                    <img
+                      src={user?.photo}
+                      alt="profile"
+                      className="w-10 h-10 rounded-full"
+                    />
                   </span>
                 </motion.button>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-gray-900">
                     {user?.name || "User"}
                   </span>
-                  
+
                   <button
                     onClick={logout}
                     className="text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
@@ -151,11 +155,15 @@ const Navbar: React.FC = () => {
                 className="w-10 h-10  text-white rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <span className="text-sm font-semibold">
-                  <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
+                  <img
+                    src={user?.photo}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full"
+                  />
                 </span>
               </motion.button>
             ) : (
-                <motion.button
+              <motion.button
                 onClick={() => navigate("/admin/login")}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -205,7 +213,11 @@ const Navbar: React.FC = () => {
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12  rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-xl">
-                        <img src={user?.photo} alt="profile" className="w-10 h-10 rounded-full" />
+                        <img
+                          src={user?.photo}
+                          alt="profile"
+                          className="w-10 h-10 rounded-full"
+                        />
                       </span>
                     </div>
                     <div>
