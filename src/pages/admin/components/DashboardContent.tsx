@@ -17,12 +17,12 @@ const DashboardContent: React.FC = () => {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [propertiesLoading, setPropertiesLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [properties, setProperties] = useState<any[]>([]);
 
   const getState = async () => {
     try {
       setStatsLoading(true);
       const res = (await AuthApi.GetOverview()) as any;
-      console.log(res.stats.shift());
       setStats(res.stats);
     } catch (error) {
       console.log(error);
@@ -51,8 +51,8 @@ const DashboardContent: React.FC = () => {
   const getProperties = async () => {
     try {
       setPropertiesLoading(true);
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = (await AuthApi.AllProperties()) as any;
+      setProperties(res.properties);
     } catch (error) {
       console.log(error);
     } finally {
@@ -66,42 +66,28 @@ const DashboardContent: React.FC = () => {
     navigate(`/admin/messages/${messageId}`);
   };
 
-  // Mock data for newly listed properties
-  const newlyListedProperties = [
-    {
-      id: 1,
-      image: "/src/assets/property.jpg",
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-    },
-    {
-      id: 2,
-      image: "/src/assets/property.jpg",
-      name: "Modern 5 Bedroom Villa",
-      location: "Asokoro, Abuja",
-      listedDate: "19 July, 2025",
-      category: "Buy",
-      price: "₦250,000,000",
-      propertyType: "Villa",
-      status: "Available",
-    },
-    {
-      id: 3,
-      image: "/src/assets/property.jpg",
-      name: "Luxury Penthouse",
-      location: "Maitama, Abuja",
-      listedDate: "18 July, 2025",
-      category: "Rent",
-      price: "₦5,000,000/month",
-      propertyType: "Penthouse",
-      status: "Unavailable",
-    },
-  ];
+  // Helper function to format property price
+  const formatPropertyPrice = (property: any) => {
+    if (property.propertyTag === "rent") {
+      if (property.monthlyPrice > 0) {
+        return `₦${property.monthlyPrice.toLocaleString()}/month`;
+      } else if (property.annualPrice > 0) {
+        const monthlyRate = property.annualPrice / 12;
+        return `₦${monthlyRate.toLocaleString()}/month`;
+      }
+    } else {
+      return `₦${property.annualPrice?.toLocaleString() || "0"}`;
+    }
+    return "Price not available";
+  };
+
+  // Helper function to format property title (truncate if too long)
+  const formatPropertyTitle = (title: string) => {
+    if (title.length > 40) {
+      return title.substring(0, 40) + "...";
+    }
+    return title;
+  };
 
   return (
     <div className="space-y-8 w-full">
@@ -163,36 +149,43 @@ const DashboardContent: React.FC = () => {
               {propertiesLoading ? (
                 <PropertiesTableSkeleton count={3} />
               ) : (
-                newlyListedProperties.map((property) => (
+                properties.slice(0, 5).map((property) => (
                   <tr key={property.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-12 w-12">
                           <img
                             className="h-12 w-12 rounded-lg object-cover"
-                            src={property.image}
-                            alt={property.name}
+                            src={
+                              property.photos && property.photos.length > 0
+                                ? property.photos[0]
+                                : "/src/assets/property.jpg"
+                            }
+                            alt={property.propertyTitle}
+                            onError={(e) => {
+                              e.currentTarget.src = "/src/assets/property.jpg";
+                            }}
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {property.name}
+                            {formatPropertyTitle(property.propertyTitle)}
                           </div>
                           <div className="text-sm text-gray-500 flex items-center">
                             <MapPin className="w-3 h-3 mr-1" />
-                            {property.location}
+                            {property.propertyLocation}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {property.listedDate}
+                      {formatDateToDisplay(property.created_at)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
+                      {property.propertyTag}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {property.category}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {property.price}
+                      {formatPropertyPrice(property)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {property.propertyType}
@@ -200,12 +193,12 @@ const DashboardContent: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          property.status === "Available"
+                          property.isFeatured === "1"
                             ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                            : "bg-blue-100 text-blue-800"
                         }`}
                       >
-                        {property.status}
+                        {property.isFeatured === "1" ? "Featured" : "Available"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

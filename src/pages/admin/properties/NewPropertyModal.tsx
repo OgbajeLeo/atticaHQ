@@ -187,7 +187,7 @@ const NewPropertyModal: React.FC<NewPropertyModalProps> = ({
               {steps[currentStep - 1].title}
             </h2>
             {currentStep > 1 && (
-              <div className="flex items-center mt-2 text-sm text-gray-500">
+              <div className="flex w-full flex-wrap items-center mt-2 text-sm text-gray-500">
                 {getBreadcrumb()}
               </div>
             )}

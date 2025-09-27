@@ -1,184 +1,104 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FilterIcon from "../../../components/iconComponent/FilterIcon";
 import NewPropertyModal from "./NewPropertyModal";
+import PropertiesTableSkeleton from "../components/PropertiesTableSkeleton";
+import { AuthApi, formatDateToDisplay } from "../../../utils";
 
 interface Property {
   id: number;
-  name: string;
-  location: string;
-  listedDate: string;
-  category: "Buy" | "Rent";
-  price: string;
+  uuid: string | null;
+  slug: string;
+  propertyTitle: string;
+  propertyLocation: string;
+  description: string;
+  monthlyPrice: number;
+  annualPrice: number;
+  propertyTag: string;
+  categoryId: number;
+  floorsNo: string;
+  floodWarning: string;
+  closestLandmark: string;
+  isFeatured: string;
+  numberOfBedrooms: number;
+  numberOfBathrooms: number;
+  numberOfKitchens: number;
+  numberOfGarages: number;
+  yearBuilt: number;
   propertyType: string;
-  status: "Available" | "Unavailable";
-  image: string;
+  videoUrl: string;
+  negotiable: string;
+  coordinates: any;
+  nearby: any[];
+  photos: string[];
+  amenities: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 const PropertiesPage: React.FC = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("Guzape");
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [showNewListingModal, setShowNewListingModal] = useState(false);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [propertiesLoading, setPropertiesLoading] = useState(true);
   const itemsPerPage = 8;
 
-  const properties: Property[] = [
-    {
-      id: 1,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 2,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 3,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Unavailable",
-      image:
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 4,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Rent",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 5,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 6,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 7,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 8,
-      name: "Brand new luxury 9 Bedroom Dup...",
-      location: "Guzape, Abuja",
-      listedDate: "20 July, 2025",
-      category: "Buy",
-      price: "₦300,000,000",
-      propertyType: "Apartment",
-      status: "Unavailable",
-      image:
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 9,
-      name: "Modern 5 Bedroom Villa",
-      location: "Asokoro, Abuja",
-      listedDate: "19 July, 2025",
-      category: "Buy",
-      price: "₦450,000,000",
-      propertyType: "Villa",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 10,
-      name: "Luxury Penthouse Suite",
-      location: "Maitama, Abuja",
-      listedDate: "18 July, 2025",
-      category: "Rent",
-      price: "₦2,500,000",
-      propertyType: "Penthouse",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 11,
-      name: "Executive Office Space",
-      location: "Wuse 2, Abuja",
-      listedDate: "17 July, 2025",
-      category: "Rent",
-      price: "₦1,200,000",
-      propertyType: "Office",
-      status: "Unavailable",
-      image:
-        "https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 12,
-      name: "Family Townhouse",
-      location: "Gwarinpa, Abuja",
-      listedDate: "16 July, 2025",
-      category: "Buy",
-      price: "₦180,000,000",
-      propertyType: "Townhouse",
-      status: "Available",
-      image:
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=100&h=100&fit=crop&crop=center",
-    },
-  ];
+  // Helper function to format property price
+  const formatPropertyPrice = (property: Property) => {
+    if (property.propertyTag === "rent") {
+      if (property.monthlyPrice > 0) {
+        return `₦${property.monthlyPrice.toLocaleString()}/month`;
+      } else if (property.annualPrice > 0) {
+        const monthlyRate = property.annualPrice / 12;
+        return `₦${monthlyRate.toLocaleString()}/month`;
+      }
+    } else {
+      return `₦${property.annualPrice?.toLocaleString() || "0"}`;
+    }
+    return "Price not available";
+  };
+
+  // Helper function to format property title (truncate if too long)
+  const formatPropertyTitle = (title: string) => {
+    if (title.length > 30) {
+      return title.substring(0, 30) + "...";
+    }
+    return title;
+  };
+
+  // API call to fetch properties
+  const getProperties = async () => {
+    try {
+      setPropertiesLoading(true);
+      const res = (await AuthApi.AllProperties()) as any;
+      setProperties(res.properties);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPropertiesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getProperties();
+  }, []);
 
   // Filter properties based on search term
   const filteredProperties = useMemo(() => {
     if (!searchTerm) return properties;
     return properties.filter(
       (property) =>
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.location.toLowerCase().includes(searchTerm.toLowerCase())
+        property.propertyTitle
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.propertyLocation
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm]);
+  }, [searchTerm, properties]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
@@ -191,12 +111,12 @@ const PropertiesPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-gray_text3">
+    <div className="min-h-screen text-gray_text3 select-none">
       {/* Header Section with Search, Filter, and New Listing Button */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between gap-4">
+      <div className="mb-6 sticky top-0 bg-white z-10 ">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
           {/* Search Bar */}
-          <div className="flex items-center w-1/2  gap-2">
+          <div className="flex items-center w-full lg:w-1/2  gap-2">
             <div className="relative flex-1 max-w-md">
               <input
                 type="text"
@@ -257,7 +177,7 @@ const PropertiesPage: React.FC = () => {
 
       {/* Properties Table */}
       <div className="rounded-lg overflow-hidden">
-        {currentProperties.length === 0 ? (
+        {currentProperties.length === 0 && !propertiesLoading ? (
           <div className="flex flex-col items-center justify-center py-16 text-gray_text3">
             <svg
               className="w-16 h-16 text-gray-400 mb-4"
@@ -285,14 +205,14 @@ const PropertiesPage: React.FC = () => {
               <thead className="text-gray_text3 bg-gray-50 font-semibold">
                 <tr>
                   <th className="px-6 py-3 text-left tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left tracking-wider">
+                  <th className="px-6 py-3 text-left tracking-wider w-full">
                     Listed Date
                   </th>
                   <th className="px-6 py-3 text-left tracking-wider">
                     Category
                   </th>
                   <th className="px-6 py-3 text-left tracking-wider">Price</th>
-                  <th className="px-6 py-3 text-left tracking-wider">
+                  <th className="px-6 py-3 text-left tracking-wider w-full">
                     Property Type
                   </th>
                   <th className="px-6 py-3 text-left tracking-wider">Status</th>
@@ -300,86 +220,103 @@ const PropertiesPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="text-gray_text3 divide-y divide-gray-100">
-                {currentProperties.map((property) => (
-                  <tr
-                    key={property.id}
-                    className="cursor-pointer transition-colors hover:bg-gray-50"
-                    onClick={() => handlePropertyClick(property.id)}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={property.image}
-                          alt={property.name}
-                          className="w-12 h-12 rounded-lg object-cover"
-                        />
-                        <div>
-                          <div className="text-sm font-medium">
-                            {property.name}
-                          </div>
-                          <div className="text-sm text-gray-500 flex items-center gap-1">
-                            <svg
-                              className="w-3 h-3"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                            {property.location}
+                {propertiesLoading ? (
+                  <PropertiesTableSkeleton count={8} />
+                ) : (
+                  currentProperties.map((property) => (
+                    <tr
+                      key={property.id}
+                      className="cursor-pointer transition-colors hover:bg-gray-50"
+                      onClick={() => handlePropertyClick(property.id)}
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={
+                              property.photos && property.photos.length > 0
+                                ? property.photos[0]
+                                : "/src/assets/property.jpg"
+                            }
+                            alt={property.propertyTitle}
+                            className="w-12 h-12 rounded-lg object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = "/src/assets/property.jpg";
+                            }}
+                          />
+                          <div>
+                            <div className="text-sm font-medium">
+                              {formatPropertyTitle(property.propertyTitle)}
+                            </div>
+                            <div className="text-sm text-gray-500 flex items-center gap-1">
+                              <svg
+                                className="w-3 h-3"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                              </svg>
+                              {property.propertyLocation}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm">{property.listedDate}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm">{property.category}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium">
-                        {property.price}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm">{property.propertyType}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          property.status === "Available"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {property.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button className="text-gray-400 hover:text-gray-600">
-                        <svg
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm">
+                          {formatDateToDisplay(property.created_at)}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm capitalize">
+                          {property.propertyTag}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium">
+                          {formatPropertyPrice(property)}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm">{property.propertyType}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            property.isFeatured === "1"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
                         >
-                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                          {property.isFeatured === "1"
+                            ? "Featured"
+                            : "Available"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button className="text-gray-400 hover:text-gray-600">
+                          <svg
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
